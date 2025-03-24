@@ -46,7 +46,7 @@ public class AppUi {
     // 로그인화면
     public static void loginScreen() {
         System.out.println("\n=============== 로그인 ===============");
-        System.out.println("환자면 1번 의사면 2번을 선택해주세요.");
+        System.out.println("환자면 1번, 의사면 2번을 선택해주세요.");
         System.out.println("1. 환자");
         System.out.println("2. 의사");
         System.out.println("3. 첫 화면으로 가기");
