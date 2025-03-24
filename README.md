@@ -10,6 +10,32 @@ GRANT CREATE SESSION TO hsp_usr;
 GRANT RESOURCE, DBA TO hsp_usr;
 ```
 
+### DB 시퀀스 생성
+```
+CREATE SEQUENCE user_seq
+    START WITH 1
+    INCREMENT BY 1
+    MAXVALUE 10000
+    NOCACHE
+    NOCYCLE;
+
+CREATE SEQUENCE doctor_seq
+    START WITH 1
+    INCREMENT BY 1
+    MAXVALUE 10000
+    NOCACHE
+    NOCYCLE;
+
+CREATE SEQUENCE booking_seq
+    START WITH 1
+    INCREMENT BY 1
+    MAXVALUE 10000
+    NOCACHE
+    NOCYCLE;
+```
+
+
+
 ### 의사 부서 설명
 
 
