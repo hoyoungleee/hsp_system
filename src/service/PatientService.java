@@ -7,8 +7,10 @@ import java.util.Map;
 
 import static ui.AppUi.*;
 public class PatientService implements AppService {
+
     PatientRepository patientRepository = new PatientRepository();
 
+    //AppService를 구현했기에 강제로 생성하는 메서드
     public void start(){
         patientMenuScreen();
     }
