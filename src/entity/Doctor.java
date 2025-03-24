@@ -9,14 +9,13 @@ public class Doctor {
     private String active;
     private Department department;
 
-    public Doctor(int doc_id, String doc_name, String password, String phone_number, String doc_birth, String active, Department department) {
+    public Doctor(int doc_id, String doc_name, String password, String phone_number, String doc_birth, String active) {
         this.doc_id = doc_id;
         this.doc_name = doc_name;
         this.password = password;
         this.phone_number = phone_number;
         this.doc_birth = doc_birth;
         this.active = active;
-        this.department = department;
     }
 
     public int getDoc_id() {
@@ -71,7 +70,4 @@ public class Doctor {
         return department;
     }
 
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
 }

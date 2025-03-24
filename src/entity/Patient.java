@@ -5,14 +5,16 @@ public class Patient {
     private String user_name;
     private String phone_number;
     private String active;
+    private String user_birth;
     private int  user_id;
 
-    public Patient(String password, String user_name, String active, int user_id, String phone_number) {
+    public Patient(String password, String user_name, String active, int user_id, String phone_number, String user_birth) {
         this.password = password;
         this.user_name = user_name;
         this.active = active;
         this.user_id = user_id;
         this.phone_number = phone_number;
+        this.user_birth = user_birth;
     }
 
     public String getPassword() {
@@ -53,5 +55,13 @@ public class Patient {
 
     public void setUser_id(int user_id) {
         this.user_id = user_id;
+    }
+
+    public String getUser_birth() {
+        return user_birth;
+    }
+
+    public void setUser_birth(String user_birth) {
+        this.user_birth = user_birth;
     }
 }
