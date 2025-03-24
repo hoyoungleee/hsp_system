@@ -21,10 +21,10 @@ public class PatientService implements AppService {
         System.out.println("이름을 입력해주세요.");
         String name = inputString(">>>");
         List<Map<String, Object>> userList = patientRepository.seachUser(name);
-        if(userList.size() == 0 ){
+        if(userList.isEmpty()){
             System.out.println("해당하는 회원이 없습니다.");
             return flag;
-        };
+        }
         for (Map<String, Object> map : userList) {
             System.out.printf("%d. 환자이름: %s, 생년월일: %s, 전번뒷자리: %s \n",
                     map.get("userId"),map.get("userName"),map.get("userBirth"), map.get("backNumber"));
