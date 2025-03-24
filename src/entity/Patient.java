@@ -6,13 +6,23 @@ public class Patient {
     private String phone_number;
     private String active;
     private int  user_id;
+    private String  user_brith;
 
-    public Patient(String password, String user_name, String active, int user_id, String phone_number) {
+    public Patient(String password, String user_name, String phone_number, String active, int user_id, String user_brith) {
         this.password = password;
         this.user_name = user_name;
+        this.phone_number = phone_number;
         this.active = active;
         this.user_id = user_id;
-        this.phone_number = phone_number;
+        this.user_brith = user_brith;
+    }
+
+    public String getUser_brith() {
+        return user_brith;
+    }
+
+    public void setUser_brith(String user_brith) {
+        this.user_brith = user_brith;
     }
 
     public String getPassword() {
