@@ -4,10 +4,12 @@ import entity.Booking;
 import entity.Patient;
 import entity.UserDto;
 import repository.BookingRepository;
+import repository.DoctorRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import static entity.Department.*;
@@ -16,61 +18,69 @@ import static ui.AppUi.*;
 public class BookingService {
 
     private Scanner sc = new Scanner(System.in);
-    private final BookingRepository bookingRepository;
-
-
-    public BookingService(BookingRepository bookingRepository) {
-        this.bookingRepository = bookingRepository;
-    }
-
+    BookingRepository bookingRepository = new BookingRepository();
+    DoctorRepository doctorRepository = new DoctorRepository();
 
     private Booking booking;
     private UserDto userDto;
-    public void setUserDto(UserDto userDto){
-        this.userDto= userDto;
-    }
+
     private Patient patient;
 
     // 진료 예약
     public void insertBooking(UserDto userDto) {
         System.out.println("\n=============== 진료 예약 ===============");
-        String dateStr = inputString("방문 희망 날짜를 입력해주세요. : ");
-        LocalDate date;
 
+        String dateStr;
+        LocalDate date;
+        String department = "";
         try {
+            dateStr = inputString("방문 희망 날짜를 입력해주세요. (예: 2025-01-01) : ");
             date = LocalDate.parse(dateStr);
         } catch (Exception e) {
             System.out.println("날짜 형식이 잘못되었습니다.");
             return;
         }
 
-        System.out.println("\n방문할 부서를 입력해주세요.");
-        System.out.println("1. 정형외과");
-        System.out.println("2. 안과");
-        System.out.println("3. 내과");
-        System.out.println("4. 성형외과");
-        int selection = inputInteger(">>> ");
-        String department = "";
-        switch (selection) {
-            case 1:
-                department = String.valueOf(ORTHOPEDICS); // 정형외과
-                break;
-            case 2:
-                department = String.valueOf(OPHTHALMOLOGY); // 안과
-                break;
-            case 3:
-                department = String.valueOf(INTERNAL_MEDICINE); // 내과
-                break;
-            case 4:
-                department = String.valueOf(PLASTIC_SURGERY); // 성형외과
-                break;
-            default:
-                System.out.println("\n해당 부서가 존재하지 않습니다.");
+        System.out.println("\n예약하실 의사선생님을 선택해주세요.");
+
+        // 현재 활성화 된 의사를 모두 조회하는 함수 필요.
+        // 리스트에서 나온 의사들 중 번호를 선택하게 하기
+        // 선택받은 값이 리스트에 있다면 그걸 변수로 할당(int doc_id)
+        // 없다면 다시 선택하게하기
+        List<Map<String, Object>> userList = doctorRepository.seachAllDoc();
+
+        if(userList.isEmpty()){
+            System.out.println("해당하는 의사가 없습니다.");
+            return;
         }
-        System.out.println("\n[" + date + " / " + department + "]로 예약하시겠습니까?");
+        for (Map<String, Object> map : userList) {
+            System.out.printf("%d. 의사선생님 성함: %s, 부서명: %s", map.get("DOC_ID"),map.get("DOC_NAME"), map.get("DEPARTMENT"));
+        }
+        System.out.println("\n해당하는 회원번호를 입력해주세요.");
+        int idx = inputInteger(">>> ");
+        int cnt = 0;
+        int docId = 0;
+        String docName = "";
+        UserDto user = new UserDto();
+        for (Map<String, Object> map : userList) {
+            if((Integer)map.get("DOC_ID") == idx) {
+                cnt++;
+                docId = idx;
+                docName = (String) map.get("DOC_NAME");
+            }
+        }
+        if(cnt != 1){
+            System.out.println("올바른 회원 번호를 선택해주세요.");
+            return;
+        } else {
+            booking = new Booking(userDto.getUserId(), docId,"", date,"N");
+        }
+        System.out.println("\n[" + date + " / " + docName + "]로 예약하시겠습니까?");
         String confirm = inputString(">>> ");
 
+
         if (confirm.equals("Y")) {
+            bookingRepository.addBooking(booking);
             System.out.println("\n예약이 완료되었습니다.");
             patientMenuScreen();
         } else if (confirm.equals("N")) {
@@ -87,22 +97,55 @@ public class BookingService {
             }
         }
 
-        bookingRepository.addBooking(booking);
+    }
 
+    public void checkBooking(UserDto userDto) {
+        List<Booking> bookings = bookingRepository.findBookingByDoctorName(userDto.getName());
+        if (bookings.isEmpty()) {
+            System.out.println("예약된 환자가 없습니다.");
+            return;
+        }
+
+        if (bookings.size() > 0) {
+            System.out.println(userDto.getName() + "의사선생님의 예약 조회 입니다.");
+            for (Booking booking : bookings) {
+                System.out.printf("%d. 환자이름: %s 생년월일: %s 예약날짜: %s",
+                        booking.getBooking_id(), booking.getPatientName(), booking.getPatientBirth(), booking.getDate());
+            }
+
+            System.out.println("\n예약환자번호를 선택해주세요.");
+            int chkBooking = inputInteger(">>> ");
+            int cnt = 0;
+            int bookingId = 0;
+            for (Booking bk : bookings) {
+                if (bk.getBooking_id() == chkBooking) {
+                    cnt++;
+                    bookingId = chkBooking;
+                }
+            }
+
+            if (cnt != 1) {
+                System.out.println("올바르지 않는 예약번호입니다.");
+            } else {
+                System.out.println("진료 내용 작성을 해주세요.");
+                String content = inputString(">>> ");
+            }
+
+        }
     }
 
     // 예약 조회
-    public List<Booking> searchBooking() {
+    public List<Booking> searchBooking(UserDto userDto) {
         System.out.println("\n=============== 예약 조회 ===============");
-        List<Booking> SearchUser =bookingRepository.getBookingByUser(userDto.getName());
-        System.out.println(SearchUser);
-        return SearchUser;
+        List<Booking> selectBooking = bookingRepository.getBookingByUser(userDto.getName());
+        System.out.println(selectBooking);
+        return selectBooking;
     }
 
     // 예약 취소
     public void deleteBooking(UserDto userDto) {
         System.out.println("\n=============== 예약 취소 ===============");
-        List<Booking> bookingList = searchBooking();
+        List<Booking> bookingList = searchBooking(userDto);
 
         if (bookingList.isEmpty()) {
             System.out.println("취소할 예약이 없습니다.");
@@ -114,7 +157,7 @@ public class BookingService {
             System.out.println(userDto.getName() + "님의 예약 조회 입니다.");
             for (Booking booking : bookingList) {
                 System.out.printf("%d. 이름: %s 생년월일: %s 예약날짜: %s",
-                        booking.getBooking_id(), userDto.getName(), patient.getUser_brith(), booking.getDate());
+                        booking.getBooking_id(), userDto.getName(), userDto.getBirth(), booking.getDate());
                 bookingNums.add(booking.getBooking_id());
             }
 
@@ -129,8 +172,8 @@ public class BookingService {
                     }
                 }
             }
-            patientMenuScreen();
         }
+        return;
     }
 
 

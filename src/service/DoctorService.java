@@ -16,16 +16,16 @@ import static ui.AppUi.*;
 public class DoctorService implements AppService {
 
     private final DoctorRepository doctorRepository = new DoctorRepository();
+    BookingService bookingService = new BookingService();
 
     @Override
     public void start(UserDto userDto){
-        System.out.println(userDto.toString());
         while (true){
             doctorMenuScreen();
             int select = inputInteger(">>>");
             switch (select){
                 case 1:{
-                    System.out.println("진료예약신청이시작됩니다.");
+                    bookingService.searchBooking(userDto);
                     break;
                 }
                 case 2:{

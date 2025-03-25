@@ -5,6 +5,7 @@ public class UserDto {
     private int userId; //회원 고유번호
     private String loginYn = "N";
     private String name;
+    private String birth;
 
 
 
@@ -42,5 +43,13 @@ public class UserDto {
                 "회원번호 = " + userId +
                 ", 로그인여부 = '" + loginYn + '\'' +
                 '}';
+    }
+
+    public String getBirth() {
+        return birth;
+    }
+
+    public void setBirth(String birth) {
+        this.birth = birth;
     }
 }
