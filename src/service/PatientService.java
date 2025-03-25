@@ -20,29 +20,29 @@ public class PatientService implements AppService {
 
     //AppService를 구현했기에 강제로 생성하는 메서드
     //유저번호 참조할 함수는 userDto 가져다 쓰세용
-    public void start(UserDto userDto){
-        while (true){
+    public void start(UserDto userDto) {
+        while (true) {
             System.out.println(userDto.toString());
             patientMenuScreen();
             int select = inputInteger(">>>");
-            switch (select){
-                case 1:{
+            switch (select) {
+                case 1: {
                     System.out.println("진료예약신청이시작됩니다.");
                     break;
                 }
-                case 2:{
+                case 2: {
                     System.out.println("예약취소를 실행하는 자리");
                     break;
                 }
-                case 3:{
-                    modifyPatient(userDto);
+                case 3: {
+
                     break;
                 }
-                case 4:{
+                case 4: {
                     System.out.println("업무를 종료 합니다.");
                     return;
                 }
-                default:{
+                default: {
                     System.out.println("올바른 선택지를 입력해주세요.");
                 }
             }
@@ -50,7 +50,7 @@ public class PatientService implements AppService {
 
     }
 
-    public Map<String,Object> isLogin(){
+    public Map<String, Object> isLogin() {
         boolean flag = false;
 
         System.out.println("이름을 입력해주세요.");
@@ -60,32 +60,32 @@ public class PatientService implements AppService {
 
 
         List<Map<String, Object>> userList = patientRepository.seachUser(name);
-        if(userList.isEmpty()){
+        if (userList.isEmpty()) {
             System.out.println("해당하는 회원이 없습니다.");
             return info;
         }
         for (Map<String, Object> map : userList) {
-            System.out.printf("%d. 환자이름: %s, 생년월일: %s, 전번뒷자리: %s \n", map.get("userId"),map.get("userName"),map.get("userBirth"), map.get("backNumber"));
+            System.out.printf("%d. 환자이름: %s, 생년월일: %s, 전번뒷자리: %s \n", map.get("userId"), map.get("userName"), map.get("userBirth"), map.get("backNumber"));
         }
         System.out.println("해당하는 회원번호를 입력해주세요.");
         int idx = inputInteger(">>>");
         int cnt = 0;
         UserDto user = new UserDto();
         for (Map<String, Object> map : userList) {
-            if((Integer)map.get("userId") == idx){
+            if ((Integer) map.get("userId") == idx) {
                 cnt++;
                 user.setUserId(idx);
             }
         }
-        if(cnt != 1){
+        if (cnt != 1) {
             System.out.println("올바른 회원 번호를 선택해주세요.");
             isLogin();
         }
 
         System.out.println("비밀번호를 입력해주세요.");
         String password = inputString(">>>");
-        int n = patientRepository.isUser(idx , password);
-        if(n == 1){
+        int n = patientRepository.isUser(idx, password);
+        if (n == 1) {
             flag = true;
             user.setLoginYn("Y");
             user.setName(name);
@@ -101,24 +101,24 @@ public class PatientService implements AppService {
         String password = inputString("비밀번호를 입력해주세요 : ");
         String phoneNumber;
         String birth;
-        while (true){
+        while (true) {
             phoneNumber = inputString("전화번호를 입력해주세요(ex)000-0000-0000 : ");
             if (!isValidPhoneNumber(phoneNumber)) {
                 System.out.println("잘못된 입력입니다. 다시입력해주세요");
-            }else {
+            } else {
                 break;
             }
         }
-        while (true){
+        while (true) {
             birth = inputString("생년월일을 입력해주세요 (ex)YY/MM/DD : ");
             if (!isValidBirth(birth)) {
                 System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
-            }else{
+            } else {
                 break;
             }
         }
 
-        Patient patient = new Patient(password, name, phoneNumber, "Y",  birth);
+        Patient patient = new Patient(password, name, phoneNumber, "Y", birth);
 
         patientRepository.addPatient(patient);
         System.out.println("회원가입 완료");
@@ -149,7 +149,7 @@ public class PatientService implements AppService {
         if (!(phoneNumber.startsWith("010") || phoneNumber.startsWith("011") ||
                 phoneNumber.startsWith("016") || phoneNumber.startsWith("017") ||
                 phoneNumber.startsWith("018") || phoneNumber.startsWith("019") ||
-                phoneNumber.startsWith("02")  || phoneNumber.startsWith("031") ||
+                phoneNumber.startsWith("02") || phoneNumber.startsWith("031") ||
                 phoneNumber.startsWith("032") || phoneNumber.startsWith("041") ||
                 phoneNumber.startsWith("051") || phoneNumber.startsWith("061"))) {
             return false;
@@ -191,24 +191,24 @@ public class PatientService implements AppService {
         int monthlength = (int) (Math.log10(month) + 1);
         int daylength = (int) (Math.log10(day) + 1);
 
-        if(yearlength > 2){
+        if (yearlength > 2) {
             System.out.println("올바른 연도를 입력해주세요.");
             return false;
         }
-        if(monthlength > 2){
+        if (monthlength > 2) {
             System.out.println("올바른 월을 입력해주세요.");
             return false;
         }
-        if(!(month<=12 && month >0)){
+        if (!(month <= 12 && month > 0)) {
             System.out.println("올바른 월을 입력해주세요.");
             return false;
         }
-        if(daylength > 2){
+        if (daylength > 2) {
             System.out.println("올바른 일자를 입력해주세요.");
             return false;
         }
 
-        if(day >31){
+        if (day > 31) {
             System.out.println("올바른 일자를 입력해주세요.");
             return false;
         }
@@ -223,12 +223,12 @@ public class PatientService implements AppService {
         }
     }
 
-    public void modifyPatient(UserDto userDto){
+    public void modifyPatient(UserDto userDto) {
         updateScreen();
         int num = inputInteger(">>>");
-        if (num == 1){
+        if (num == 1) {
             modifyPasswordPatient(userDto);
-        } else if (num ==2) {
+        } else if (num == 2) {
             modifyPhoneNumberPatient(userDto);
         }
     }
@@ -249,5 +249,21 @@ public class PatientService implements AppService {
         String newPhoneNumber = inputString("새로운 전화번호: ");
 
         patientRepository.updateNumberPatient(id, newPhoneNumber);
+    }
+
+
+    public void delPatient() {
+
+        System.out.println("이름을 입력해주세요.");
+        String delUserName = inputString(">>>");
+
+        List<Map<String, Object>> userList = patientRepository.seachUser(delUserName);
+
+        if (userList.isEmpty()) {
+            System.out.println("해당하는 회원이 없습니다.");
+        } else {
+            patientRepository.delPatient(delUserName);
+            System.out.println("회원 정보가 삭제되었습니다.");
+        } return;
     }
 }
