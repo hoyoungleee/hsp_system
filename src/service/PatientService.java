@@ -4,6 +4,7 @@ import entity.Patient;
 
 import entity.UserDto;
 
+import repository.BookingRepository;
 import repository.PatientRepository;
 
 import java.time.LocalDate;
@@ -16,11 +17,8 @@ import static ui.AppUi.*;
 public class PatientService implements AppService {
 
     private final PatientRepository patientRepository = new PatientRepository();
-    private final BookingService bookingService;
-
-    public PatientService() {
-        bookingService = null;
-    }
+    private final BookingRepository bookingRepository = new BookingRepository();
+    BookingService bookingService = new BookingService(bookingRepository);
 
 
     //AppService를 구현했기에 강제로 생성하는 메서드
@@ -87,7 +85,8 @@ public class PatientService implements AppService {
         }
         if(cnt != 1){
             System.out.println("올바른 회원 번호를 선택해주세요.");
-            isLogin();
+            info.put("flag", flag);
+            return info;
         }
 
         System.out.println("비밀번호를 입력해주세요.");
