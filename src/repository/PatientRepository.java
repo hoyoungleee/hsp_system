@@ -80,6 +80,7 @@ public class PatientRepository {
         return n;
     }
 
+
     public void updateNumberPatient(int user_id, String newPhoneNumber) {
         try (Connection conn = DBConnectionManager.getConnection()) {
             String sql = "SELECT phone_number FROM PATIENT_TB WHERE user_id =?";
@@ -134,6 +135,22 @@ public class PatientRepository {
                 int i = pstmt.executeUpdate();
                 System.out.println(i > 0 ? "비밀번호 수정완료" : "수정 실패");
             }
+
+    // 환자 계정 추가
+    public void addPatient(Patient patient) {
+        String sql = "INSERT INTO PATIENT_TB (user_id, password, user_name, phone_number, ACTIVE, user_birth) " +
+                "VALUES(user_seq.NEXTVAL, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, patient.getPassword());
+            pstmt.setString(2, patient.getUser_name());
+            pstmt.setString(3, patient.getPhone_number());
+            pstmt.setString(4, patient.getActive());
+            pstmt.setString(5, patient.getUser_brith());
+
+            pstmt.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
