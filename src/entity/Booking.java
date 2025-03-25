@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class Booking {
     private int booking_id;
     private int user_id;
-    private String doc_id;
+    private int doc_id;
     private String content;
     private LocalDate date;
     private String status;

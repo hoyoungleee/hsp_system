@@ -1,5 +1,6 @@
 package repository;
 
+import entity.Patient;
 import jdbc.DBConnectionManager;
 
 import java.sql.Connection;
@@ -77,5 +78,64 @@ public class PatientRepository {
             e.printStackTrace();
         }
         return n;
+    }
+
+    public void updateNumberPatient(int user_id, String newPhoneNumber) {
+        try (Connection conn = DBConnectionManager.getConnection()) {
+            String sql = "SELECT phone_number FROM PATIENT_TB WHERE user_id =?";
+            try (PreparedStatement checkpstmt = conn.prepareStatement(sql)) {
+                checkpstmt.setInt(1, user_id);
+                try (ResultSet rs = checkpstmt.executeQuery()) {
+                    if (rs.next()) {
+                        String updatedPhoneNumber = rs.getString("phone_number");
+                        if (updatedPhoneNumber.equals(newPhoneNumber)) {
+                            System.out.println("기존 전화번호와 동일합니다.");
+                            return;
+                        }
+                    }
+                }
+            }
+
+            sql = "UPDATE PATIENT_TB SET phone_number = ? WHERE user_id = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, newPhoneNumber);
+                pstmt.setInt(2, user_id);
+
+                int i = pstmt.executeUpdate();
+                System.out.println(i > 0 ? "전화번호 수정완료" : "수정실패");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updatePasswordPatient(int user_id, String newPassword) {
+        try (Connection conn = DBConnectionManager.getConnection()) {
+            String sql = "SELECT password FROM PATIENT_TB WHERE user_id = ?";
+            try (PreparedStatement checkpstmt = conn.prepareStatement(sql)) {
+                checkpstmt.setInt(1, user_id);
+                try (ResultSet rs = checkpstmt.executeQuery()) {
+                    if (rs.next()) {
+                        String currPassword = rs.getString("password");
+                        if (currPassword.equals(newPassword)) {
+                            System.out.println("동일한 비밀번호입니다.");
+                            return;
+                        }
+                    }
+                }
+            }
+
+            sql = "UPDATE PATIENT_TB SET password = ? WHERE user_id = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, newPassword);
+                pstmt.setInt(2, user_id);
+
+
+                int i = pstmt.executeUpdate();
+                System.out.println(i > 0 ? "비밀번호 수정완료" : "수정 실패");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
