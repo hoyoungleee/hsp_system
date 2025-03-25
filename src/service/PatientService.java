@@ -1,7 +1,9 @@
 package service;
 
 import entity.Patient;
+
 import entity.UserDto;
+
 import repository.PatientRepository;
 
 import java.time.LocalDate;
@@ -223,4 +225,21 @@ public class PatientService implements AppService {
         }
     }
 
+    public void modifyPasswordPatient(UserDto userDto) {
+        int id = userDto.getUserId();
+
+        System.out.println("수정할 비밀번호를 입력하세요.");
+        String newPassword = inputString("새로운 비밀번호: ");
+
+        patientRepository.updatePasswordPatient(id, newPassword);
+    }
+
+    public void modifyPhoneNumberPatient(UserDto userDto) {
+        int id = userDto.getUserId();
+
+        System.out.println("수정할 전화번호를 입력하세요.");
+        String newPhoneNumber = inputString("새로운 전화번호: ");
+
+        patientRepository.updateNumberPatient(id, newPhoneNumber);
+    }
 }
