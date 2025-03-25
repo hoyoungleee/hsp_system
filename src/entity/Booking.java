@@ -5,10 +5,19 @@ import java.time.LocalDate;
 public class Booking {
     private int booking_id;
     private int user_id;
-    private String doc_id;
+    private int doc_id;
     private String content;
     private LocalDate date;
     private String status;
+
+    public Booking(int booking_id, String user_id, int doc_id, LocalDate date, String content, String status) {
+        this.booking_id = booking_id;
+        this.user_id = user_id;
+        this.doc_id = doc_id;
+        this.date = date;
+        this.content = content;
+        this.status = status;
+    }
 
     public int getBooking_id() {
         return booking_id;
@@ -26,11 +35,11 @@ public class Booking {
         this.user_id = user_id;
     }
 
-    public String getDoc_id() {
+    public int getDoc_id() {
         return doc_id;
     }
 
-    public void setDoc_id(String doc_id) {
+    public void setDoc_id(int doc_id) {
         this.doc_id = doc_id;
     }
 
@@ -58,12 +67,5 @@ public class Booking {
         this.status = status;
     }
 
-    public Booking(int booking_id, int user_id, String doc_id, String content, LocalDate date, String status) {
-        this.booking_id = booking_id;
-        this.user_id = user_id;
-        this.doc_id = doc_id;
-        this.content = content;
-        this.date = date;
-        this.status = status;
-    }
+
 }
