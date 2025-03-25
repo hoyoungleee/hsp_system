@@ -10,7 +10,7 @@ public class Booking {
     private LocalDate date;
     private String status;
 
-    public Booking(int booking_id, String user_id, int doc_id, LocalDate date, String content, String status) {
+    public Booking(int booking_id, int user_id, int doc_id, LocalDate date, String content, String status) {
         this.booking_id = booking_id;
         this.user_id = user_id;
         this.doc_id = doc_id;
