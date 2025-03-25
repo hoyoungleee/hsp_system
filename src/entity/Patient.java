@@ -8,6 +8,16 @@ public class Patient {
     private int  user_id;
     private String  user_brith;
 
+    //계정생성할떄 id가 없기 때문에 생성할때 id값을 뺌
+    public Patient(String password, String user_name, String phone_number, String active, String user_brith) {
+        this.password = password;
+        this.user_name = user_name;
+        this.phone_number = phone_number;
+        this.active = active;
+        this.user_brith = user_brith;
+    }
+
+    //일반 정보를 담을 때 씀.
     public Patient(String password, String user_name, String phone_number, String active, int user_id, String user_brith) {
         this.password = password;
         this.user_name = user_name;

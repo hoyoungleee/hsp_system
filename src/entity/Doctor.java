@@ -9,14 +9,26 @@ public class Doctor {
     private String active;
     private Department department;
 
-    public Doctor(int doc_id, String doc_name, String password, String phone_number, String doc_birth, String active) {
+
+    //계정생성할떄 id가 없기 때문에 생성할때 id값을 뺌
+    public Doctor( String doc_name, String password, String phone_number, String doc_birth, String active, Department department) {
+        this.doc_name = doc_name;
+        this.password = password;
+        this.phone_number = phone_number;
+        this.doc_birth = doc_birth;
+        this.department = department;
+        this.active = active;
+    }
+
+    //일반 정보를 담을 때 씀.
+    public Doctor(int doc_id, String doc_name, String password, String phone_number, String doc_birth, String active, Department department) {
         this.doc_id = doc_id;
         this.doc_name = doc_name;
         this.password = password;
         this.phone_number = phone_number;
         this.doc_birth = doc_birth;
+        this.department = department;
         this.active = active;
-    
     }
 
     public int getDoc_id() {
