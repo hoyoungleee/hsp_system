@@ -69,4 +69,14 @@ public class Booking {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public Booking(int booking_id, int user_id, int doc_id, String content, LocalDate date, String status) {
+        this.booking_id = booking_id;
+        this.user_id = user_id;
+        this.doc_id = doc_id;
+        this.content = content;
+        this.date = date;
+        this.status = status;
+    }
+
 }

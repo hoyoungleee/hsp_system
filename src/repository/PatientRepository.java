@@ -1,5 +1,6 @@
 package repository;
 
+import entity.Patient;
 import jdbc.DBConnectionManager;
 
 import java.sql.Connection;
@@ -77,5 +78,25 @@ public class PatientRepository {
             e.printStackTrace();
         }
         return n;
+    }
+
+    // 환자 계정 추가
+    public void addPatient(Patient patient) {
+        String sql = "INSERT INTO PATIENT_TB (user_id, password, user_name, phone_number, ACTIVE, user_birth) " +
+                "VALUES(user_seq.NEXTVAL, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, patient.getPassword());
+            pstmt.setString(2, patient.getUser_name());
+            pstmt.setString(3, patient.getPhone_number());
+            pstmt.setString(4, patient.getActive());
+            pstmt.setString(5, patient.getUser_brith());
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
