@@ -58,6 +58,7 @@ public class DoctorService implements AppService {
         List<Map<String, Object>> userList = doctorRepository.seachUser(name);
         if(userList.isEmpty()){
             System.out.println("해당하는 회원이 없습니다.");
+            info.put("flag", flag);
             return info;
         }
         for (Map<String, Object> map : userList) {

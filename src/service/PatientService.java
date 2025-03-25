@@ -51,6 +51,7 @@ public class PatientService implements AppService {
     }
 
     public Map<String,Object> isLogin(){
+
         boolean flag = false;
 
         System.out.println("이름을 입력해주세요.");
@@ -62,6 +63,7 @@ public class PatientService implements AppService {
         List<Map<String, Object>> userList = patientRepository.seachUser(name);
         if(userList.isEmpty()){
             System.out.println("해당하는 회원이 없습니다.");
+            info.put("flag", flag);
             return info;
         }
         for (Map<String, Object> map : userList) {
