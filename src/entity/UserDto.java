@@ -1,14 +1,14 @@
 package entity;
 
-public class User {
+public class UserDto {
 
     private int userId; //회원 고유번호
     private String loginYn = "N";
 
-    public User(){
+    public UserDto(){
 
     }
-    public User(int userId, String loginYn) {
+    public UserDto(int userId, String loginYn) {
         this.userId = userId;
         this.loginYn = loginYn;
     }
