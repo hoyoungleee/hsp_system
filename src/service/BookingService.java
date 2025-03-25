@@ -112,7 +112,7 @@ public class BookingService {
             int delBooking = inputInteger(">>> ");
 
             if (bookingNums.contains(delBooking)) {
-                bookingRepository.deleteBooking(delBooking);
+                BookingRepository.deleteBooking(delBooking);
                 for (Booking booking : bookingList) {
                     if (booking.getBooking_id() == delBooking) {
                         System.out.println("정말로 예약을 취소하시겠습니까? ");
