@@ -5,16 +5,15 @@ import java.util.Scanner;
 
 public class AppUi {
 
+    static Scanner sc = new Scanner(System.in);
+
     public static String inputString(String message) {
-        Scanner sc = new Scanner(System.in);
-        String str = sc.nextLine();
         System.out.print(message);
-        sc.close();
+        String str = sc.nextLine();
         return str;
     }
 
     public static int inputInteger(String message) {
-        Scanner sc = new Scanner(System.in);
         System.out.print(message);
         int num = 0;
         try {
@@ -24,12 +23,11 @@ public class AppUi {
         } finally {
             sc.nextLine();
         }
-        sc.close();
         return num;
     }
 
     public static void makeLine() {
-        System.out.print("======================================");
+        System.out.println("======================================");
     }
 
     // 메인화면
