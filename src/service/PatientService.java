@@ -81,7 +81,8 @@ public class PatientService implements AppService {
         }
         if(cnt != 1){
             System.out.println("올바른 회원 번호를 선택해주세요.");
-            isLogin();
+            info.put("flag", flag);
+            return info;
         }
 
         System.out.println("비밀번호를 입력해주세요.");
