@@ -43,8 +43,7 @@ public class PatientService implements AppService {
             return flag;
         }
         for (Map<String, Object> map : userList) {
-            System.out.printf("%d. 환자이름: %s, 생년월일: %s, 전번뒷자리: %s \n",
-                    map.get("userId"),map.get("userName"),map.get("userBirth"), map.get("backNumber"));
+            System.out.printf("%d. 환자이름: %s, 생년월일: %s, 전번뒷자리: %s \n", map.get("userId"),map.get("userName"),map.get("userBirth"), map.get("backNumber"));
         }
         System.out.println("해당하는 회원번호를 입력해주세요.");
         int idx = inputInteger(">>>");
