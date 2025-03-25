@@ -13,6 +13,31 @@ import java.util.List;
 import java.util.Map;
 
 public class PatientRepository {
+
+    // 환자 계정 추가
+    public void addPatient (Patient patient){
+        String sql = "INSERT INTO PATIENT_TB (user_id, password, user_name, phone_number, ACTIVE, user_birth) " +
+                "VALUES(user_seq.NEXTVAL, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, patient.getPassword());
+            pstmt.setString(2, patient.getUser_name());
+            pstmt.setString(3, patient.getPhone_number());
+            pstmt.setString(4, patient.getActive());
+            pstmt.setString(5, patient.getUser_brith());
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
     //해당 이름을 가진 유저 가져오기
     public List<Map<String, Object>> seachUser(String userName){
         //조건없이 결과물 불러오는 sql
@@ -80,23 +105,65 @@ public class PatientRepository {
         return n;
     }
 
-    // 환자 계정 추가
-    public void addPatient(Patient patient) {
-        String sql = "INSERT INTO PATIENT_TB (user_id, password, user_name, phone_number, ACTIVE, user_birth) " +
-                "VALUES(user_seq.NEXTVAL, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = DBConnectionManager.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, patient.getPassword());
-            pstmt.setString(2, patient.getUser_name());
-            pstmt.setString(3, patient.getPhone_number());
-            pstmt.setString(4, patient.getActive());
-            pstmt.setString(5, patient.getUser_brith());
+    public void updateNumberPatient(int user_id, String newPhoneNumber) {
+        try (Connection conn = DBConnectionManager.getConnection()) {
+            String sql = "SELECT phone_number FROM PATIENT_TB WHERE user_id =?";
+            try (PreparedStatement checkpstmt = conn.prepareStatement(sql)) {
+                checkpstmt.setInt(1, user_id);
+                try (ResultSet rs = checkpstmt.executeQuery()) {
+                    if (rs.next()) {
+                        String updatedPhoneNumber = rs.getString("phone_number");
+                        if (updatedPhoneNumber.equals(newPhoneNumber)) {
+                            System.out.println("기존 전화번호와 동일합니다.");
+                            return;
+                        }
+                    }
+                }
+            }
 
-            pstmt.executeUpdate();
+            sql = "UPDATE PATIENT_TB SET phone_number = ? WHERE user_id = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, newPhoneNumber);
+                pstmt.setInt(2, user_id);
 
+                int i = pstmt.executeUpdate();
+                System.out.println(i > 0 ? "전화번호 수정완료" : "수정실패");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+    public void updatePasswordPatient(int user_id, String newPassword) {
+        try (Connection conn = DBConnectionManager.getConnection()) {
+            String sql = "SELECT password FROM PATIENT_TB WHERE user_id = ?";
+            try (PreparedStatement checkpstmt = conn.prepareStatement(sql)) {
+                checkpstmt.setInt(1, user_id);
+                try (ResultSet rs = checkpstmt.executeQuery()) {
+                    if (rs.next()) {
+                        String currPassword = rs.getString("password");
+                        if (currPassword.equals(newPassword)) {
+                            System.out.println("동일한 비밀번호입니다.");
+                            return;
+                        }
+                    }
+                }
+            }
+
+            sql = "UPDATE PATIENT_TB SET password = ? WHERE user_id = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, newPassword);
+                pstmt.setInt(2, user_id);
+
+
+                int i = pstmt.executeUpdate();
+                System.out.println(i > 0 ? "비밀번호 수정완료" : "수정 실패");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+
 }

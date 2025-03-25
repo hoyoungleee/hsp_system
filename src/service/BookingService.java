@@ -18,9 +18,11 @@ public class BookingService {
     private Scanner sc = new Scanner(System.in);
     private final BookingRepository bookingRepository;
 
+
     public BookingService(BookingRepository bookingRepository) {
         this.bookingRepository = bookingRepository;
     }
+
 
     private Booking booking;
     private UserDto userDto;

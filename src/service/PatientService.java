@@ -1,7 +1,9 @@
 package service;
 
 import entity.Patient;
+
 import entity.UserDto;
+
 import repository.PatientRepository;
 
 import java.time.LocalDate;
@@ -39,24 +41,23 @@ public class PatientService implements AppService {
                     break;
                 }
                 case 3:{
-                    System.out.println("회원 정보 수정 실행하는 자리");
+                    modifyPatient(userDto);
                     break;
                 }
                 case 4:{
                     System.out.println("업무를 종료 합니다.");
-                    userDto = null;
-                    break;
+                    return;
                 }
                 default:{
                     System.out.println("올바른 선택지를 입력해주세요.");
                 }
-
             }
         }
 
     }
 
     public Map<String,Object> isLogin(){
+
         boolean flag = false;
 
         System.out.println("이름을 입력해주세요.");
@@ -68,6 +69,7 @@ public class PatientService implements AppService {
         List<Map<String, Object>> userList = patientRepository.seachUser(name);
         if(userList.isEmpty()){
             System.out.println("해당하는 회원이 없습니다.");
+            info.put("flag", flag);
             return info;
         }
         for (Map<String, Object> map : userList) {
@@ -229,4 +231,31 @@ public class PatientService implements AppService {
         }
     }
 
+    public void modifyPatient(UserDto userDto){
+        updateScreen();
+        int num = inputInteger(">>>");
+        if (num == 1){
+            modifyPasswordPatient(userDto);
+        } else if (num ==2) {
+            modifyPhoneNumberPatient(userDto);
+        }
+    }
+
+    public void modifyPasswordPatient(UserDto userDto) {
+        int id = userDto.getUserId();
+
+        System.out.println("수정할 비밀번호를 입력하세요.");
+        String newPassword = inputString("새로운 비밀번호: ");
+
+        patientRepository.updatePasswordPatient(id, newPassword);
+    }
+
+    public void modifyPhoneNumberPatient(UserDto userDto) {
+        int id = userDto.getUserId();
+
+        System.out.println("수정할 전화번호를 입력하세요.");
+        String newPhoneNumber = inputString("새로운 전화번호: ");
+
+        patientRepository.updateNumberPatient(id, newPhoneNumber);
+    }
 }
