@@ -1,5 +1,7 @@
 package service;
 
+import entity.UserDto;
+
 public interface AppService {
-    void start();
+    void start(UserDto userDto);
 }

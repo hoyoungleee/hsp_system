@@ -21,7 +21,7 @@ public class DoctorRepository {
         //조건이 있는 결과물 불러오는 sql
         // String sql = "SELECT 가져올컬럼명 FROM sample WHERE 조건걸컬럼명 = ? ";
         //조건이 여러개 있는 결과물 불러오는 sql
-        String sql = "SELECT * FROM DOCTOR_TB pt WHERE pt.USER_NAME = ? AND ACTIVE = 'Y'";
+        String sql = "SELECT * FROM DOCTOR_TB WHERE DOC_NAME = ? AND ACTIVE = 'Y'";
 
         //목록데이터 담을 리스트변수
         List<Map<String, Object>> userList = new ArrayList<>();
@@ -35,9 +35,9 @@ public class DoctorRepository {
 
             while (rs.next()){
                 Map<String,Object> row = new HashMap<>();
-                row.put("userId",rs.getInt("USER_ID"));
-                row.put("userName",rs.getString("USER_NAME"));
-                row.put("userBirth",rs.getString("USER_BIRTH"));
+                row.put("userId",rs.getInt("DOC_ID"));
+                row.put("userName",rs.getString("DOC_NAME"));
+                row.put("userBirth",rs.getString("DOC_BIRTH"));
                 String phoneNumber =   rs.getString("PHONE_NUMBER");
                 String backNumber = phoneNumber.substring(phoneNumber.length() - 4);
                 row.put("backNumber", backNumber);
@@ -59,7 +59,7 @@ public class DoctorRepository {
         //조건이 있는 결과물 불러오는 sql
         // String sql = "SELECT 가져올컬럼명 FROM sample WHERE 조건걸컬럼명 = ? ";
         //조건이 여러개 있는 결과물 불러오는 sql
-        String sql = "SELECT count(*) as total FROM DOCTOR_TB pt WHERE pt.USER_ID = ? AND PASSWORD = ? ";
+        String sql = "SELECT count(*) as total FROM DOCTOR_TB pt WHERE pt.DOC_ID = ? AND PASSWORD = ? ";
 
         //해당하는 유저를 담을 변수
         int n = 0;

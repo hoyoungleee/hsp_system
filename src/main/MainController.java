@@ -1,8 +1,12 @@
 package main;
+import entity.UserDto;
 import service.AppService;
 import service.BookingService;
 import service.DoctorService;
 import service.PatientService;
+
+import java.util.List;
+import java.util.Map;
 
 import static ui.AppUi.*;
 public class MainController {
@@ -15,22 +19,23 @@ public class MainController {
         int num = inputInteger(">>>");
         System.out.println(num);
         if(num == 1){
-           boolean flag =  patientService.isLogin();
-           if(flag){
-               patientService.start();
+           Map<String,Object> loginInfo =  patientService.isLogin();
+
+           if((boolean)loginInfo.get("flag")){
+               patientService.start((UserDto)loginInfo.get("userInfo"));
            }else {
                System.out.println("올바른 계정정보를 입력하세요.");
                login();
            }
         }else if (num ==2) {
-            boolean flag =  doctorService.isLogin();
-            if(flag){
-                doctorService.start();
+            Map<String,Object> loginInfo =  doctorService.isLogin();
+
+            if((boolean)loginInfo.get("flag")){
+                doctorService.start((UserDto)loginInfo.get("userInfo"));
             }else {
                 System.out.println("올바른 계정정보를 입력하세요.");
                 login();
             }
-
         }
     }
 

@@ -2,10 +2,12 @@ package service;
 
 import entity.Department;
 import entity.Doctor;
+import entity.UserDto;
 import repository.DoctorRepository;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,30 +18,60 @@ public class DoctorService implements AppService {
     private final DoctorRepository doctorRepository = new DoctorRepository();
 
     @Override
-    public void start(){
-        doctorMenuScreen();
+    public void start(UserDto userDto){
+        System.out.println(userDto.toString());
+        while (true){
+            doctorMenuScreen();
+            int select = inputInteger(">>>");
+            switch (select){
+                case 1:{
+                    System.out.println("진료예약신청이시작됩니다.");
+                    break;
+                }
+                case 2:{
+                    System.out.println("예약취소를 실행하는 자리");
+                    break;
+                }
+                case 3:{
+                    System.out.println("업무를 종료합니다.");
+                    userDto = null;
+                    break;
+                }
+                default:{
+                    System.out.println("올바른 선택지를 입력해주세요.");
+                }
+
+            }
+        }
+
     }
 
-    public boolean isLogin(){
+    public Map<String,Object> isLogin(){
         boolean flag = false;
 
         System.out.println("이름을 입력해주세요.");
         String name = inputString(">>>");
+        //로그인 정보를 담기 위한 그릇
+
+        Map<String, Object> info = new HashMap<>();
+
+
         List<Map<String, Object>> userList = doctorRepository.seachUser(name);
         if(userList.isEmpty()){
             System.out.println("해당하는 회원이 없습니다.");
-            return flag;
+            return info;
         }
         for (Map<String, Object> map : userList) {
-            System.out.printf("%d. 환자이름: %s, 생년월일: %s, 전번뒷자리: %s \n",
-                    map.get("userId"),map.get("userName"),map.get("userBirth"), map.get("backNumber"));
+            System.out.printf("%d. 의사선생님 성함: %s, 생년월일: %s, 전번뒷자리: %s \n", map.get("userId"),map.get("userName"),map.get("userBirth"), map.get("backNumber"));
         }
         System.out.println("해당하는 회원번호를 입력해주세요.");
         int idx = inputInteger(">>>");
         int cnt = 0;
+        UserDto user = new UserDto();
         for (Map<String, Object> map : userList) {
             if((Integer)map.get("userId") == idx){
                 cnt++;
+                user.setUserId(idx);
             }
         }
         if(cnt != 1){
@@ -52,9 +84,12 @@ public class DoctorService implements AppService {
         int n = doctorRepository.isUser(idx , password);
         if(n == 1){
             flag = true;
+            user.setLoginYn("Y");
+            user.setName(name);
         }
-
-        return flag;
+        info.put("flag", flag);
+        info.put("userInfo", user);
+        return info;
     }
     // 부서 선택하는 메서드
     public static Department selectDec() {
