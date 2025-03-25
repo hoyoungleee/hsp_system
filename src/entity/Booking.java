@@ -10,15 +10,33 @@ public class Booking {
     private String content;
     private LocalDate date;
     private String status;
+    private String patientName;
+    private String patientBirth;
 
-    public Booking(int booking_id, int user_id, int doc_id, LocalDate date, String content, String status) {
+    public Booking(int booking_id, int user_id, int doc_id, LocalDate date, String content, String patientName, String patientBirth) {
         this.booking_id = booking_id;
         this.user_id = user_id;
         this.doc_id = doc_id;
         this.date = date;
         this.content = content;
-        this.status = status;
+        this.patientName = patientName;
+        this.patientBirth = patientBirth;
+    }
 
+    public String getPatientName() {
+        return patientName;
+    }
+
+    public void setPatientName(String patientName) {
+        this.patientName = patientName;
+    }
+
+    public String getPatientBirth() {
+        return patientBirth;
+    }
+
+    public void setPatientBirth(String patientBirth) {
+        this.patientBirth = patientBirth;
     }
 
     public int getBooking_id() {
@@ -70,6 +88,16 @@ public class Booking {
         this.status = status;
     }
 
+    //예약 생성시 쓰는 생성자
+    public Booking(int user_id, int doc_id, String content, LocalDate date, String status) {
+        this.user_id = user_id;
+        this.doc_id = doc_id;
+        this.content = content;
+        this.date = date;
+        this.status = status;
+    }
+
+    //정보 조회 쓰는 생성자
     public Booking(int booking_id, int user_id, int doc_id, String content, LocalDate date, String status) {
         this.booking_id = booking_id;
         this.user_id = user_id;

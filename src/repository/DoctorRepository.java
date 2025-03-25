@@ -55,6 +55,42 @@ public class DoctorRepository {
         return userList;
     }
 
+    public List<Map<String, Object>> seachAllDoc() {
+        //조건없이 결과물 불러오는 sql
+//        String sql = "SELECT * FROM PATIENT_TB pt";
+        //조건이 있는 결과물 불러오는 sql
+        // String sql = "SELECT 가져올컬럼명 FROM sample WHERE 조건걸컬럼명 = ? ";
+        //조건이 여러개 있는 결과물 불러오는 sql
+        String sql = "SELECT * FROM DOCTOR_TB WHERE ACTIVE = 'Y'";
+
+        //목록데이터 담을 리스트변수
+        List<Map<String, Object>> userList = new ArrayList<>();
+
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement prsmt = conn.prepareStatement(sql)) {
+
+            //select할때는 excuteQuery() 로 실행 후 ResultSet으로 받아옵니다.
+            ResultSet rs = prsmt.executeQuery();
+
+            while (rs.next()) {
+                Map<String, Object> row = new HashMap<>();
+                row.put("DOC_ID", rs.getInt("DOC_ID"));
+                row.put("DOC_NAME", rs.getString("DOC_NAME"));
+                row.put("DOC_BIRTH", rs.getString("DOC_BIRTH"));
+                String phoneNumber = rs.getString("PHONE_NUMBER");
+                String backNumber = phoneNumber.substring(phoneNumber.length() - 4);
+                row.put("backNumber", backNumber);
+                row.put("DEPARTMENT", rs.getString("DEPARTMENT"));
+                userList.add(row);
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
+
     //해당 번호와 비밀번호를 가진 유저 가져오기
     public int isUser(int userNum, String password) {
         //조건없이 결과물 불러오는 sql

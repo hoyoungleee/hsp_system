@@ -16,17 +16,15 @@ import java.util.Map;
 import static ui.AppUi.*;
 public class PatientService implements AppService {
 
-    private final PatientRepository patientRepository = new PatientRepository();
-    private final BookingRepository bookingRepository = new BookingRepository();
-    BookingService bookingService = new BookingService(bookingRepository);
-
+    PatientRepository patientRepository = new PatientRepository();
+    BookingRepository bookingRepository = new BookingRepository();
+    BookingService bookingService = new BookingService();
 
     //AppService를 구현했기에 강제로 생성하는 메서드
     //유저번호 참조할 함수는 userDto 가져다 쓰세용
     public void start(UserDto userDto){
 
         while (true){
-            System.out.println(userDto.toString());
             patientMenuScreen();
             int select = inputInteger(">>> ");
             switch (select){
@@ -81,6 +79,7 @@ public class PatientService implements AppService {
             if((Integer)map.get("userId") == idx){
                 cnt++;
                 user.setUserId(idx);
+                user.setBirth((String) map.get("userBirth"));
             }
         }
         if(cnt != 1){
