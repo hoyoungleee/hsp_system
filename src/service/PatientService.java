@@ -1,11 +1,13 @@
 package service;
 
 import entity.Patient;
-import entity.User;
+import entity.UserDto;
 import repository.PatientRepository;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,32 +17,52 @@ public class PatientService implements AppService {
     private final PatientRepository patientRepository = new PatientRepository();
 
     //AppService를 구현했기에 강제로 생성하는 메서드
-    public void start(){
+    //유저번호 참조할 함수는 userDto 가져다 쓰세용
+    public void start(UserDto userDto){
         while (true){
+            System.out.println(userDto.toString());
             patientMenuScreen();
             int select = inputInteger(">>>");
             switch (select){
-                case 1:{}
-                case 2:{}
-                case 3:{}
-                case 4:{}
+                case 1:{
+                    System.out.println("진료예약신청이시작됩니다.");
+                    break;
+                }
+                case 2:{
+                    System.out.println("예약취소를 실행하는 자리");
+                    break;
+                }
+                case 3:{
+                    System.out.println("회원 정보 수정 실행하는 자리");
+                    break;
+                }
+                case 4:{
+                    System.out.println("업무를 종료 합니다.");
+                    userDto = null;
+                    break;
+                }
                 default:{
                     System.out.println("올바른 선택지를 입력해주세요.");
                 }
+
             }
         }
 
     }
 
-    public boolean isLogin(){
+    public Map<String,Object> isLogin(){
         boolean flag = false;
 
         System.out.println("이름을 입력해주세요.");
         String name = inputString(">>>");
+        //로그인 정보를 담기 위한 그릇
+        Map<String, Object> info = new HashMap<>();
+
+
         List<Map<String, Object>> userList = patientRepository.seachUser(name);
         if(userList.isEmpty()){
             System.out.println("해당하는 회원이 없습니다.");
-            return flag;
+            return info;
         }
         for (Map<String, Object> map : userList) {
             System.out.printf("%d. 환자이름: %s, 생년월일: %s, 전번뒷자리: %s \n", map.get("userId"),map.get("userName"),map.get("userBirth"), map.get("backNumber"));
@@ -48,7 +70,7 @@ public class PatientService implements AppService {
         System.out.println("해당하는 회원번호를 입력해주세요.");
         int idx = inputInteger(">>>");
         int cnt = 0;
-        User user = new User();
+        UserDto user = new UserDto();
         for (Map<String, Object> map : userList) {
             if((Integer)map.get("userId") == idx){
                 cnt++;
@@ -66,9 +88,11 @@ public class PatientService implements AppService {
         if(n == 1){
             flag = true;
             user.setLoginYn("Y");
+            user.setName(name);
         }
-
-        return flag;
+        info.put("flag", flag);
+        info.put("userInfo", user);
+        return info;
     }
 
     public void patientJoin() {

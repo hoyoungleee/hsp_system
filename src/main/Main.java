@@ -25,7 +25,7 @@ public class Main {
                  mc.createAccount();
              } else if (num==3){
                  System.out.println("# 프로그램을 종료합니다.");
-                 System.exit(0);
+                 break;
              }else {
                  System.out.println("올바른 선택지를 입력하세요.");
              }
