@@ -23,7 +23,7 @@ public class BookingRepository {
              PreparedStatement pstmt = conn.prepareStatement(insert_booking)) {
 
             pstmt.setInt(1, booking.getBooking_id());
-            pstmt.setString(2, booking.getStatus());
+
             pstmt.setInt(3, booking.getUser_id());
             pstmt.setString(4, String.valueOf(booking.getDate()));
             pstmt.setString(5, booking.getContent());
@@ -55,8 +55,8 @@ public class BookingRepository {
                             rs.getInt("user_id"),                // 사용자 ID
                             rs.getInt("doc_id"),                 // 의사 ID
                             LocalDate.parse(rs.getString("booking_date"), DateTimeFormatter.ISO_DATE), // 예약 날짜
-                            rs.getString("content"),             // 예약 내용
-                            rs.getString("booking_status")      // 예약 상태
+                            rs.getString("content")            // 예약 내용
+
                     );
                     bookings.add(booking);  // 리스트에 예약 추가
                 }
@@ -90,8 +90,8 @@ public class BookingRepository {
                             rs.getInt("user_id"),                // 사용자 ID
                             rs.getInt("doc_id"),                 // 의사 ID
                             LocalDate.parse(rs.getString("booking_date"), DateTimeFormatter.ISO_DATE), // 예약 날짜
-                            rs.getString("content"),             // 예약 내용
-                            rs.getString("booking_status")      // 예약 상태
+                            rs.getString("content")          // 예약 내용
+
                     );
                     bookings.add(booking);  // 리스트에 예약 추가
                 }

@@ -1,6 +1,7 @@
 package entity;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Booking {
     private int booking_id;
@@ -8,15 +9,15 @@ public class Booking {
     private int doc_id;
     private String content;
     private LocalDate date;
-    private String status;
 
-    public Booking(int booking_id, int user_id, int doc_id, LocalDate date, String content, String status) {
+
+    public Booking(int booking_id, int user_id, int doc_id, LocalDate date, String content) {
         this.booking_id = booking_id;
         this.user_id = user_id;
         this.doc_id = doc_id;
         this.date = date;
         this.content = content;
-        this.status = status;
+
     }
 
     public int getBooking_id() {
@@ -59,13 +60,9 @@ public class Booking {
         this.date = date;
     }
 
-    public String getStatus() {
-        return status;
-    }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+
+
 
 
 }
