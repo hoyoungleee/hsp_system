@@ -13,19 +13,17 @@ import java.util.List;
 import static jdbc.DBConnectionManager.getConnection;
 
 public class BookingRepository {
-    private Booking booking;
-
     // Booking 예약 신청
-    public boolean addBooking() {
+    public boolean addBooking(Booking booking) {
         String insert_booking = "INSERT INTO booking_tb (booking_id, booking_status, user_id, booking_date, content, doc_id) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(insert_booking)) {
 
             pstmt.setInt(1, booking.getBooking_id());
-
+            pstmt.setString(2, booking.getStatus());
             pstmt.setInt(3, booking.getUser_id());
-            pstmt.setString(4, String.valueOf(booking.getDate()));
+            pstmt.setString(4, booking.getDate().toString());  // LocalDate를 String으로 변환
             pstmt.setString(5, booking.getContent());
             pstmt.setInt(6, booking.getDoc_id());
 
@@ -55,8 +53,8 @@ public class BookingRepository {
                             rs.getInt("user_id"),                // 사용자 ID
                             rs.getInt("doc_id"),                 // 의사 ID
                             LocalDate.parse(rs.getString("booking_date"), DateTimeFormatter.ISO_DATE), // 예약 날짜
-                            rs.getString("content")            // 예약 내용
-
+                            rs.getString("content"),             // 예약 내용
+                            rs.getString("booking_status")      // 예약 상태
                     );
                     bookings.add(booking);  // 리스트에 예약 추가
                 }
@@ -90,8 +88,8 @@ public class BookingRepository {
                             rs.getInt("user_id"),                // 사용자 ID
                             rs.getInt("doc_id"),                 // 의사 ID
                             LocalDate.parse(rs.getString("booking_date"), DateTimeFormatter.ISO_DATE), // 예약 날짜
-                            rs.getString("content")          // 예약 내용
-
+                            rs.getString("content"),             // 예약 내용
+                            rs.getString("booking_status")      // 예약 상태
                     );
                     bookings.add(booking);  // 리스트에 예약 추가
                 }
