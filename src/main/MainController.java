@@ -17,7 +17,6 @@ public class MainController {
     public void login(){
         loginScreen();
         int num = inputInteger(">>>");
-        System.out.println(num);
         if(num == 1){
            Map<String,Object> loginInfo =  patientService.isLogin();
 

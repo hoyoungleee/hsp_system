@@ -35,18 +35,16 @@ public class PatientService implements AppService {
                     break;
                 }
                 case 3:{
-                    System.out.println("회원 정보 수정 실행하는 자리");
+                    modifyPatient(userDto);
                     break;
                 }
                 case 4:{
                     System.out.println("업무를 종료 합니다.");
-                    userDto = null;
-                    break;
+                    return;
                 }
                 default:{
                     System.out.println("올바른 선택지를 입력해주세요.");
                 }
-
             }
         }
 
@@ -222,6 +220,16 @@ public class PatientService implements AppService {
             return true;
         } catch (DateTimeParseException e) {
             return false;
+        }
+    }
+
+    public void modifyPatient(UserDto userDto){
+        updateScreen();
+        int num = inputInteger(">>>");
+        if (num == 1){
+            modifyPasswordPatient(userDto);
+        } else if (num ==2) {
+            modifyPhoneNumberPatient(userDto);
         }
     }
 

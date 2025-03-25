@@ -29,13 +29,12 @@ public class DoctorService implements AppService {
                     break;
                 }
                 case 2:{
-                    System.out.println("예약취소를 실행하는 자리");
+                    modifyDoctor(userDto);
                     break;
                 }
                 case 3:{
                     System.out.println("업무를 종료합니다.");
-                    userDto = null;
-                    break;
+                    return;
                 }
                 default:{
                     System.out.println("올바른 선택지를 입력해주세요.");
@@ -239,6 +238,16 @@ public class DoctorService implements AppService {
             return false;
         }
 
+    }
+
+    public void modifyDoctor(UserDto userDto){
+        updateScreen();
+        int num = inputInteger(">>>");
+        if (num == 1){
+            modifyPasswordDoctor(userDto);
+        } else if (num ==2) {
+            modifyPhoneNumber(userDto);
+        }
     }
 
     public void modifyPasswordDoctor(UserDto userDto) {

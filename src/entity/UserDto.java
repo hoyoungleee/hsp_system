@@ -10,10 +10,7 @@ public class UserDto {
 
     public UserDto(){
     }
-    public UserDto(int userId, String loginYn) {
-        this.userId = userId;
-        this.loginYn = loginYn;
-    }
+
 
     public String getName() {
         return name;

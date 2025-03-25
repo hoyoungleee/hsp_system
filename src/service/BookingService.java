@@ -26,10 +26,10 @@ public class BookingService {
                     insertBooking();
                     break;
                 case 2:
-                    deleteBooking();
+//                    deleteBooking();
                     break;
                 case 3:
-                    updateUser();
+//                    updateUser();
                     break;
                 case 4:
                     return;
@@ -90,48 +90,48 @@ public class BookingService {
         }
     }
 
-    // 예약 취소
-    public void deleteBooking() {
-        System.out.println("\n=============== 예약 취소 ===============");
-        List<Booking> bookingList = searchBooking();
-
-        if (bookingList.isEmpty()) {
-            System.out.println("취소할 예약이 없습니다.");
-            return;
-        }
-
-        if (bookingList.size() > 0) {
-            List<Integer> bookingNums = new ArrayList<>();
-            System.out.println(Booking.getName + "님의 예약 조회 입니다.");
-            for (Booking booking : bookingList) {
-                System.out.printf("%d. 이름: %s 생년월일: %s 예약날짜: %s",
-                        booking.getBooking_id(), booking.getUser_id(), booking.getDate())
-                bookingNums.add(booking.getBooking_id());
-            }
-            System.out.println("\n취소할 예약번호를 선택해주세요.");
-            int delBooking = inputInteger(">>> ");
-
-            if (bookingNums.contains(delBooking)) {
-                BookingRepository.deleteBooking(delBooking);
-                for (Booking booking : bookingList) {
-                    if (booking.getBooking_id() == delBooking) {
-                        System.out.println("정말로 예약을 취소하시겠습니까? ");
-                        break;
-                    }
-                }
-                String deleteBooking = inputString(">>> ");
-                if (deleteBooking.equals("Y")) {
-                    System.out.println("\n예약이 정상적으로 취소되었습니다.");
-                } else if (deleteBooking.equals("N")) {
-                    System.out.println("\n예약 취소를 취소하였습니다.");
-                } else {
-                    System.out.println("\n잘못된 입력입니다.");
-                }
-
-
-            }
-        }
-    }
+//    // 예약 취소
+//    public void deleteBooking() {
+//        System.out.println("\n=============== 예약 취소 ===============");
+//        List<Booking> bookingList = searchBooking();
+//
+//        if (bookingList.isEmpty()) {
+//            System.out.println("취소할 예약이 없습니다.");
+//            return;
+//        }
+//
+//        if (bookingList.size() > 0) {
+//            List<Integer> bookingNums = new ArrayList<>();
+//            System.out.println(Booking.getName + "님의 예약 조회 입니다.");
+//            for (Booking booking : bookingList) {
+//                System.out.printf("%d. 이름: %s 생년월일: %s 예약날짜: %s",
+//                        booking.getBooking_id(), booking.getUser_id(), booking.getDate());
+//                bookingNums.add(booking.getBooking_id());
+//            }
+//            System.out.println("\n취소할 예약번호를 선택해주세요.");
+//            int delBooking = inputInteger(">>> ");
+//
+//            if (bookingNums.contains(delBooking)) {
+//                BookingRepository.deleteBooking(delBooking);
+//                for (Booking booking : bookingList) {
+//                    if (booking.getBooking_id() == delBooking) {
+//                        System.out.println("정말로 예약을 취소하시겠습니까? ");
+//                        break;
+//                    }
+//                }
+//                String deleteBooking = inputString(">>> ");
+//                if (deleteBooking.equals("Y")) {
+//                    System.out.println("\n예약이 정상적으로 취소되었습니다.");
+//                } else if (deleteBooking.equals("N")) {
+//                    System.out.println("\n예약 취소를 취소하였습니다.");
+//                } else {
+//                    System.out.println("\n잘못된 입력입니다.");
+//                }
+//
+//
+//            }
+//        }
+//    }
 
 
 }
