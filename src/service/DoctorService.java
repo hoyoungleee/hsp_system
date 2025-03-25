@@ -209,24 +209,24 @@ public class DoctorService implements AppService {
         int monthlength = (int) (Math.log10(month) + 1);
         int daylength = (int) (Math.log10(day) + 1);
 
-        if(yearlength > 2){
+        if (yearlength > 2) {
             System.out.println("올바른 연도를 입력해주세요.");
             return false;
         }
-        if(monthlength > 2){
+        if (monthlength > 2) {
             System.out.println("올바른 월을 입력해주세요.");
             return false;
         }
-        if(!(month<=12 && month >0)){
+        if (!(month <= 12 && month > 0)) {
             System.out.println("올바른 월을 입력해주세요.");
             return false;
         }
-        if(daylength > 2){
+        if (daylength > 2) {
             System.out.println("올바른 일자를 입력해주세요.");
             return false;
         }
 
-        if(day >31){
+        if (day > 31) {
             System.out.println("올바른 일자를 입력해주세요.");
             return false;
         }
@@ -238,9 +238,11 @@ public class DoctorService implements AppService {
         } catch (DateTimeParseException e) {
             return false;
         }
-      
-      public void modifyPasswordDoctor(UserDto userDto) {
-        int id = userDto.getUserDto();
+
+    }
+
+    public void modifyPasswordDoctor(UserDto userDto) {
+        int id = userDto.getUserId();
 
         System.out.println("수정할 비밀번호를 입력하세요.");
         String newPassword = inputString("새 비밀번호: ");
@@ -250,12 +252,11 @@ public class DoctorService implements AppService {
     }
 
     public void modifyPhoneNumber(UserDto userDto) {
-        int id = userDto.getUserDto();
+        int id = userDto.getUserId();
 
         System.out.println("수정하실 전화번호를 입력하세요.");
         String newPhoneNumber = inputString("새 전화번호: ");
 
         doctorRepository.updateNumberDoctor(id,newPhoneNumber);
     }
-
 }
