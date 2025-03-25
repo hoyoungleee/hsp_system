@@ -13,6 +13,31 @@ import java.util.List;
 import java.util.Map;
 
 public class PatientRepository {
+
+    // 환자 계정 추가
+    public void addPatient (Patient patient){
+        String sql = "INSERT INTO PATIENT_TB (user_id, password, user_name, phone_number, ACTIVE, user_birth) " +
+                "VALUES(user_seq.NEXTVAL, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, patient.getPassword());
+            pstmt.setString(2, patient.getUser_name());
+            pstmt.setString(3, patient.getPhone_number());
+            pstmt.setString(4, patient.getActive());
+            pstmt.setString(5, patient.getUser_brith());
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
     //해당 이름을 가진 유저 가져오기
     public List<Map<String, Object>> seachUser(String userName){
         //조건없이 결과물 불러오는 sql
@@ -135,24 +160,10 @@ public class PatientRepository {
                 int i = pstmt.executeUpdate();
                 System.out.println(i > 0 ? "비밀번호 수정완료" : "수정 실패");
             }
-
-    // 환자 계정 추가
-    public void addPatient(Patient patient) {
-        String sql = "INSERT INTO PATIENT_TB (user_id, password, user_name, phone_number, ACTIVE, user_birth) " +
-                "VALUES(user_seq.NEXTVAL, ?, ?, ?, ?, ?)";
-
-        try (Connection conn = DBConnectionManager.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, patient.getPassword());
-            pstmt.setString(2, patient.getUser_name());
-            pstmt.setString(3, patient.getPhone_number());
-            pstmt.setString(4, patient.getActive());
-            pstmt.setString(5, patient.getUser_brith());
-
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
+        }catch (SQLException e){
             e.printStackTrace();
         }
     }
+
+
 }
