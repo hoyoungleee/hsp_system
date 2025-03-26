@@ -140,6 +140,7 @@ public class DoctorService implements AppService {
         Doctor doctor = new Doctor(name, password, phoneNumber, birth, "Y", department);
 
         doctorRepository.addDoctor(doctor);
+        System.out.println("회원가입이 완료 되었습니다.");
 
     }
 

@@ -135,7 +135,7 @@ public class PatientService implements AppService {
         Patient patient = new Patient(password, name, phoneNumber, "Y",  birth);
 
         patientRepository.addPatient(patient);
-        System.out.println("회원가입 완료");
+        System.out.println("회원가입이 완료 되었습니다.");
 
     }
 
@@ -302,14 +302,16 @@ public class PatientService implements AppService {
 
     public void findByCharge(UserDto userDto){
 
+        System.out.println(userDto.getName() + " 님의 처리된 진료 목록입니다.");
         BookingRepository Repository = new BookingRepository();
         int sum = 0;
         for (Booking booking : bookingRepository.FindbyBookingCharge(userDto.getUserId())) {
 
             String date = String.valueOf(booking.getDate());
             int charge = Department.valueOf(booking.getDepartment()).getPrice();
+            String name = Department.valueOf(booking.getDepartment()).getName();
             sum += charge;
-            System.out.printf("%d.방문부서 : %s , 방문날짜 : %s, 진료비용 : %d \n", booking.getBooking_id(), booking.getDepartment() ,date, charge);
+            System.out.printf("%d. 방문부서 : %s , 방문날짜 : %s, 진료비용 : %d , 진료내용 : %s \n", booking.getBooking_id(), name ,date, charge, booking.getContent());
         }
 
         System.out.printf("%s님의 총 진료 비용은 %d 입니다.\n", userDto.getName(), sum);
