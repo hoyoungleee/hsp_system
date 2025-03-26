@@ -35,7 +35,7 @@ public class PatientService implements AppService {
                     break;
                 }
                 case 3: {
-                    delPatient();
+                    delPatient(userDto);
                     break;
                 }
                 case 4: {
@@ -257,18 +257,9 @@ public class PatientService implements AppService {
         }
     }
 
-    public void delPatient() {
-
-        System.out.println("회원번호를 입력해주세요.");
-        int delUserNum = inputInteger(">>>");
-
-        List<Map<String, Object>> userList = patientRepository.seachUser(delUserNum);
-
-        if (userList.isEmpty()) {
-            System.out.println("해당하는 회원이 없습니다.");
-        } else {
-            patientRepository.delPatient(delUserNum);
-            System.out.println("회원 정보가 삭제되었습니다.");
-        } return;
+    public void delPatient(UserDto userDto) {
+        int delUserNum = userDto.getUserId();
+        patientRepository.delPatient(delUserNum);
+        System.out.println("회원 정보가 삭제되었습니다.");
     }
 }

@@ -29,7 +29,7 @@ public class DoctorService implements AppService {
                     break;
                 }
                 case 2:{
-                    delDoctor();
+                    delDoctor(userDto);
                     modifyDoctor(userDto);
                     break;
                 }
@@ -270,18 +270,10 @@ public class DoctorService implements AppService {
         doctorRepository.updateNumberDoctor(id,newPhoneNumber);
     }
 
-    public void delDoctor() {
-
-        System.out.println("회원번호를 입력해주세요.");
-        int delUserNum = inputInteger(">>>");
-
-        List<Map<String, Object>> userList = doctorRepository.seachUser(delUserNum);
-
-        if (userList.isEmpty()) {
-            System.out.println("해당하는 회원이 없습니다.");
-        } else {
-            doctorRepository.delDoctor(delUserNum);
-            System.out.println("회원 정보가 삭제되었습니다.");
-        } return;
+    public void delDoctor(UserDto userDto) {
+        int delUserNum = userDto.getUserId();
+        doctorRepository.delDoctor(delUserNum);
+        System.out.println("회원 정보가 삭제되었습니다.");
+         return;
     }
 }
