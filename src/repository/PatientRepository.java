@@ -16,6 +16,7 @@ public class PatientRepository {
 
     // 환자 계정 추가
     public void addPatient (Patient patient){
+
         String sql = "INSERT INTO PATIENT_TB (user_id, password, user_name, phone_number, del_yn, user_birth) " +
                 "VALUES(user_seq.NEXTVAL, ?, ?, ?, ?, ?)";
 
@@ -45,7 +46,9 @@ public class PatientRepository {
         //조건이 있는 결과물 불러오는 sql
         // String sql = "SELECT 가져올컬럼명 FROM sample WHERE 조건걸컬럼명 = ? ";
         //조건이 여러개 있는 결과물 불러오는 sql
+
         String sql = "SELECT * FROM PATIENT_TB pt WHERE pt.USER_NAME = ? AND del_yn = 'Y'";
+
 
         //목록데이터 담을 리스트변수
         List<Map<String, Object>> userList = new ArrayList<>();
