@@ -2,8 +2,7 @@ package repository;
 
 import entity.Doctor;
 
-import entity.Patient;
-
+import entity.UserDto;
 import jdbc.DBConnectionManager;
 
 import java.sql.Connection;
@@ -175,7 +174,56 @@ public class DoctorRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
 
+    public void delDoctor(int delUserNum) {
+        String sql = "UPDATE DOCTOR_TB SET ACTIVE = 'N' WHERE DOC_ID = ?";
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, delUserNum);
+            pstmt.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public List<Map<String, Object>> seachUser(int userNum) {
+        //조건없이 결과물 불러오는 sql
+//        String sql = "SELECT * FROM PATIENT_TB pt";
+        //조건이 있는 결과물 불러오는 sql
+        // String sql = "SELECT 가져올컬럼명 FROM sample WHERE 조건걸컬럼명 = ? ";
+        //조건이 여러개 있는 결과물 불러오는 sql
+        String sql = "SELECT * FROM DOCTOR_TB WHERE DOC_ID = ? AND ACTIVE = 'Y'";
+
+        //목록데이터 담을 리스트변수
+        List<Map<String, Object>> userList = new ArrayList<>();
+
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement prsmt = conn.prepareStatement(sql)) {
+            prsmt.setInt(1, userNum);
+
+            //select할때는 excuteQuery() 로 실행 후 ResultSet으로 받아옵니다.
+            ResultSet rs = prsmt.executeQuery();
+
+            while (rs.next()) {
+                Map<String, Object> row = new HashMap<>();
+                row.put("userId", rs.getInt("DOC_ID"));
+                row.put("userName", rs.getString("DOC_NAME"));
+                row.put("userBirth", rs.getString("DOC_BIRTH"));
+                String phoneNumber = rs.getString("PHONE_NUMBER");
+                String backNumber = phoneNumber.substring(phoneNumber.length() - 4);
+                row.put("backNumber", backNumber);
+                row.put("department", rs.getString("DEPARTMENT"));
+                userList.add(row);
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userList;
     }
 }
 
