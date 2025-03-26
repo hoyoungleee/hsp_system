@@ -51,6 +51,7 @@ public class PatientService implements AppService {
     }
 
     public Map<String, Object> isLogin() {
+
         boolean flag = false;
 
         System.out.println("이름을 입력해주세요.");
@@ -62,6 +63,7 @@ public class PatientService implements AppService {
         List<Map<String, Object>> userList = patientRepository.seachUser(name);
         if (userList.isEmpty()) {
             System.out.println("해당하는 회원이 없습니다.");
+            info.put("flag", flag);
             return info;
         }
         for (Map<String, Object> map : userList) {
@@ -79,7 +81,8 @@ public class PatientService implements AppService {
         }
         if (cnt != 1) {
             System.out.println("올바른 회원 번호를 선택해주세요.");
-            isLogin();
+            info.put("flag", flag);
+            return info;
         }
 
         System.out.println("비밀번호를 입력해주세요.");
@@ -247,8 +250,11 @@ public class PatientService implements AppService {
 
         System.out.println("수정할 전화번호를 입력하세요.");
         String newPhoneNumber = inputString("새로운 전화번호: ");
-
-        patientRepository.updateNumberPatient(id, newPhoneNumber);
+        if (!isValidPhoneNumber(newPhoneNumber)) {
+            System.out.println("유효하지 않은 전화번호 입니다.");
+        } else {
+            patientRepository.updateNumberPatient(id, newPhoneNumber);
+        }
     }
 
     public void delPatient() {

@@ -109,6 +109,12 @@ public class DoctorRepository {
 
     }
     public void updateNumberDoctor ( int doc_id, String newPhoneNumber){
+        if (newPhoneNumber == null || newPhoneNumber.trim().isEmpty()) {
+            System.out.println("새 전화번호는 반드시 입력해야 합니다.");
+            return;
+        }
+
+
         try (Connection conn = DBConnectionManager.getConnection()) {
             String sql = "SELECT phone_number FROM DOCTOR_TB WHERE doc_id = ?";
             try (PreparedStatement checkpstmt = conn.prepareStatement(sql)) {
@@ -139,6 +145,10 @@ public class DoctorRepository {
 
     public void updatePasswordDoctor ( int doc_id, String newPassword){
 
+        if (newPassword == null || newPassword.trim().isEmpty()) {
+            System.out.println("새 비밀번호는 반드시 입력해야 합니다.");
+            return;
+        }
         try (Connection conn = DBConnectionManager.getConnection()) {
             String sql = "SELECT password FROM DOCTOR_TB WHERE doc_id = ?";
             try (PreparedStatement checkpstmt = conn.prepareStatement(sql)) {
