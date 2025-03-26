@@ -6,17 +6,29 @@ public class Doctor {
     private String password;
     private String  phone_number;
     private String doc_birth;
-    private String active;
+    private String del_yn;
     private Department department;
 
-    public Doctor(int doc_id, String doc_name, String password, String phone_number, String doc_birth, String active) {
+
+    //계정생성할떄 id가 없기 때문에 생성할때 id값을 뺌
+    public Doctor( String doc_name, String password, String phone_number, String doc_birth, String del_yn, Department department) {
+        this.doc_name = doc_name;
+        this.password = password;
+        this.phone_number = phone_number;
+        this.doc_birth = doc_birth;
+        this.department = department;
+        this.del_yn = del_yn;
+    }
+
+    //일반 정보를 담을 때 씀.
+    public Doctor(int doc_id, String doc_name, String password, String phone_number, String doc_birth, String del_yn, Department department) {
         this.doc_id = doc_id;
         this.doc_name = doc_name;
         this.password = password;
         this.phone_number = phone_number;
         this.doc_birth = doc_birth;
-        this.active = active;
-    
+        this.department = department;
+        this.del_yn = del_yn;
     }
 
     public int getDoc_id() {
@@ -59,12 +71,12 @@ public class Doctor {
         this.doc_birth = doc_birth;
     }
 
-    public String getActive() {
-        return active;
+    public String getDel_yn() {
+        return del_yn;
     }
 
-    public void setActive(String active) {
-        this.active = active;
+    public void setDel_yn(String active) {
+        this.del_yn = active;
     }
 
     public Department getDepartment() {
