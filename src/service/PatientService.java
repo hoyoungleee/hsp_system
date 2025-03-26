@@ -253,7 +253,10 @@ public class PatientService implements AppService {
 
         System.out.println("수정할 전화번호를 입력하세요.");
         String newPhoneNumber = inputString("새로운 전화번호: ");
-
-        patientRepository.updateNumberPatient(id, newPhoneNumber);
+        if (!isValidPhoneNumber(newPhoneNumber)) {
+            System.out.println("유효하지 않은 전화번호 입니다.");
+        } else {
+            patientRepository.updateNumberPatient(id, newPhoneNumber);
+        }
     }
 }

@@ -28,15 +28,15 @@ public class DoctorService implements AppService {
                     bookingService.checkBooking(userDto);
                     break;
                 }
-                case 2:{
+                case 2: {
                     modifyDoctor(userDto);
                     break;
                 }
-                case 3:{
+                case 3: {
                     System.out.println("업무를 종료합니다.");
                     return;
                 }
-                default:{
+                default: {
                     System.out.println("올바른 선택지를 입력해주세요.");
                 }
 
@@ -45,7 +45,7 @@ public class DoctorService implements AppService {
 
     }
 
-    public Map<String,Object> isLogin(){
+    public Map<String, Object> isLogin() {
         boolean flag = false;
 
         System.out.println("이름을 입력해주세요.");
@@ -56,25 +56,25 @@ public class DoctorService implements AppService {
 
 
         List<Map<String, Object>> userList = doctorRepository.seachUser(name);
-        if(userList.isEmpty()){
+        if (userList.isEmpty()) {
             System.out.println("해당하는 회원이 없습니다.");
             info.put("flag", flag);
             return info;
         }
         for (Map<String, Object> map : userList) {
-            System.out.printf("%d. 의사선생님 성함: %s, 생년월일: %s, 전번뒷자리: %s \n", map.get("userId"),map.get("userName"),map.get("userBirth"), map.get("backNumber"));
+            System.out.printf("%d. 의사선생님 성함: %s, 생년월일: %s, 전번뒷자리: %s \n", map.get("userId"), map.get("userName"), map.get("userBirth"), map.get("backNumber"));
         }
         System.out.println("해당하는 회원번호를 입력해주세요.");
         int idx = inputInteger(">>>");
         int cnt = 0;
         UserDto user = new UserDto();
         for (Map<String, Object> map : userList) {
-            if((Integer)map.get("userId") == idx){
+            if ((Integer) map.get("userId") == idx) {
                 cnt++;
                 user.setUserId(idx);
             }
         }
-        if(cnt != 1){
+        if (cnt != 1) {
             System.out.println("올바른 회원 번호를 선택해주세요.");
             info.put("flag", flag);
             return info;
@@ -82,8 +82,8 @@ public class DoctorService implements AppService {
 
         System.out.println("비밀번호를 입력해주세요.");
         String password = inputString(">>>");
-        int n = doctorRepository.isUser(idx , password);
-        if(n == 1){
+        int n = doctorRepository.isUser(idx, password);
+        if (n == 1) {
             flag = true;
             user.setLoginYn("Y");
             user.setName(name);
@@ -92,6 +92,7 @@ public class DoctorService implements AppService {
         info.put("userInfo", user);
         return info;
     }
+
     // 부서 선택하는 메서드
     public static Department selectDec() {
         System.out.println("================= 부서 선택 ==================");
@@ -114,31 +115,30 @@ public class DoctorService implements AppService {
 
     // 의사 추가
     public void doctorJoin() {
-            String name = inputString("회원명을 입력해주세요 :");
-            String password = inputString("비밀번호를 입력해주세요 : ");
-            Department department = selectDec();
-            String phoneNumber;
-            String birth;
-            while (true){
-                phoneNumber = inputString("전화번호를 입력해주세요(ex)000-0000-0000 : ");
-                if (!isValidPhoneNumber(phoneNumber)) {
-                    System.out.println("잘못된 입력입니다. 다시입력해주세요");
-                }else {
-                    break;
-                }
+        String name = inputString("회원명을 입력해주세요 :");
+        String password = inputString("비밀번호를 입력해주세요 : ");
+        Department department = selectDec();
+        String phoneNumber;
+        String birth;
+        while (true) {
+            phoneNumber = inputString("전화번호를 입력해주세요(ex)000-0000-0000 : ");
+            if (!isValidPhoneNumber(phoneNumber)) {
+                System.out.println("잘못된 입력입니다. 다시입력해주세요");
+            } else {
+                break;
             }
-            while (true){
-                birth = inputString("생년월일을 입력해주세요 (ex)YY/MM/DD : ");
-                if (!isValidBirth(birth)) {
-                    System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
-                }else{
-                    break;
-                }
+        }
+        while (true) {
+            birth = inputString("생년월일을 입력해주세요 (ex)YY/MM/DD : ");
+            if (!isValidBirth(birth)) {
+                System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
+            } else {
+                break;
             }
+        }
 
 
-
-        Doctor doctor = new Doctor( name, password, phoneNumber, birth , "Y",department);
+        Doctor doctor = new Doctor(name, password, phoneNumber, birth, "Y", department);
 
         doctorRepository.addDoctor(doctor);
 
@@ -168,7 +168,7 @@ public class DoctorService implements AppService {
         if (!(phoneNumber.startsWith("010") || phoneNumber.startsWith("011") ||
                 phoneNumber.startsWith("016") || phoneNumber.startsWith("017") ||
                 phoneNumber.startsWith("018") || phoneNumber.startsWith("019") ||
-                phoneNumber.startsWith("02")  || phoneNumber.startsWith("031") ||
+                phoneNumber.startsWith("02") || phoneNumber.startsWith("031") ||
                 phoneNumber.startsWith("032") || phoneNumber.startsWith("041") ||
                 phoneNumber.startsWith("051") || phoneNumber.startsWith("061"))) {
             return false;
@@ -242,12 +242,12 @@ public class DoctorService implements AppService {
 
     }
 
-    public void modifyDoctor(UserDto userDto){
+    public void modifyDoctor(UserDto userDto) {
         updateScreen();
         int num = inputInteger(">>>");
-        if (num == 1){
+        if (num == 1) {
             modifyPasswordDoctor(userDto);
-        } else if (num ==2) {
+        } else if (num == 2) {
             modifyPhoneNumber(userDto);
         }
     }
@@ -267,7 +267,10 @@ public class DoctorService implements AppService {
 
         System.out.println("수정하실 전화번호를 입력하세요.");
         String newPhoneNumber = inputString("새 전화번호: ");
-
-        doctorRepository.updateNumberDoctor(id,newPhoneNumber);
+        if (!isValidPhoneNumber(newPhoneNumber)) {
+            System.out.println("유효하지 않은 전화번호 입니다.");
+        } else {
+            doctorRepository.updateNumberDoctor(id, newPhoneNumber);
+        }
     }
 }
