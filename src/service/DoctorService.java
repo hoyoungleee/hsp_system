@@ -25,7 +25,7 @@ public class DoctorService implements AppService {
             int select = inputInteger(">>>");
             switch (select){
                 case 1:{
-                    bookingService.searchBooking(userDto);
+                    bookingService.checkBooking(userDto);
                     break;
                 }
                 case 2:{

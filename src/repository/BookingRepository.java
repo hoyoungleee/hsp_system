@@ -1,6 +1,9 @@
 package repository;
 
 import entity.Booking;
+import entity.UserDto;
+import jdbc.DBConnectionManager;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -115,6 +118,20 @@ public class BookingRepository {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public void insertContent(int bookingId, String content) {
+        String sql = "UPDATE booking_tb SET content = ?, booking_status = 'Y' WHERE booking_id = ? ";
+
+        try (Connection conn = DBConnectionManager.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, content);
+            pstmt.setInt(2, bookingId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
 
