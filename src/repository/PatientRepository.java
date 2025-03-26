@@ -16,7 +16,8 @@ public class PatientRepository {
 
     // 환자 계정 추가
     public void addPatient (Patient patient){
-        String sql = "INSERT INTO PATIENT_TB (user_id, password, user_name, phone_number, DEL_YN, user_birth) " +
+
+        String sql = "INSERT INTO PATIENT_TB (user_id, password, user_name, phone_number, del_yn, user_birth) " +
                 "VALUES(user_seq.NEXTVAL, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DBConnectionManager.getConnection();
@@ -24,7 +25,7 @@ public class PatientRepository {
             pstmt.setString(1, patient.getPassword());
             pstmt.setString(2, patient.getUser_name());
             pstmt.setString(3, patient.getPhone_number());
-            pstmt.setString(4, patient.getActive());
+            pstmt.setString(4, patient.getDel_yn());
             pstmt.setString(5, patient.getUser_brith());
 
             pstmt.executeUpdate();
@@ -45,7 +46,9 @@ public class PatientRepository {
         //조건이 있는 결과물 불러오는 sql
         // String sql = "SELECT 가져올컬럼명 FROM sample WHERE 조건걸컬럼명 = ? ";
         //조건이 여러개 있는 결과물 불러오는 sql
-        String sql = "SELECT * FROM PATIENT_TB pt WHERE pt.USER_NAME = ? AND DEL_YN = 'Y'";
+
+        String sql = "SELECT * FROM PATIENT_TB pt WHERE pt.USER_NAME = ? AND del_yn = 'Y'";
+
 
         //목록데이터 담을 리스트변수
         List<Map<String, Object>> userList = new ArrayList<>();
@@ -107,6 +110,10 @@ public class PatientRepository {
 
 
     public void updateNumberPatient(int user_id, String newPhoneNumber) {
+        if (newPhoneNumber == null || newPhoneNumber.trim().isEmpty()) {
+            System.out.println("새 전화번호는 반드시 입력해야 합니다.");
+            return;
+        }
         try (Connection conn = DBConnectionManager.getConnection()) {
             String sql = "SELECT phone_number FROM PATIENT_TB WHERE user_id =?";
             try (PreparedStatement checkpstmt = conn.prepareStatement(sql)) {
@@ -136,6 +143,10 @@ public class PatientRepository {
     }
 
     public void updatePasswordPatient(int user_id, String newPassword) {
+        if (newPassword == null || newPassword.trim().isEmpty()) {
+            System.out.println("새 전화번호는 반드시 입력해야 합니다.");
+            return;
+        }
         try (Connection conn = DBConnectionManager.getConnection()) {
             String sql = "SELECT password FROM PATIENT_TB WHERE user_id = ?";
             try (PreparedStatement checkpstmt = conn.prepareStatement(sql)) {
@@ -164,6 +175,15 @@ public class PatientRepository {
             e.printStackTrace();
         }
     }
-
+    public void delPatient(int delUserNum) {
+        String sql = "UPDATE PATIENT_TB SET del_yn = 'N' WHERE USER_ID = ?";
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, delUserNum);
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

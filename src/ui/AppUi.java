@@ -76,6 +76,7 @@ public class AppUi {
         System.out.println("\n=============== 회원 정보 수정 ===============");
         System.out.println("1. 수정하기");
         System.out.println("2. 탈퇴하기");
+        System.out.println("3. 나가기");
         makeLine();
     }
 

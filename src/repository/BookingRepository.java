@@ -1,6 +1,9 @@
 package repository;
 
 import entity.Booking;
+import entity.UserDto;
+import jdbc.DBConnectionManager;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,6 +30,7 @@ public class BookingRepository {
             pstmt.setInt(5, booking.getDoc_id());
 
             int result = pstmt.executeUpdate(); // 실행된 행 수 반환
+
             return result > 0; // 1 이상이면 성공
 
         } catch (SQLException e) {
@@ -198,6 +202,20 @@ public class BookingRepository {
         return bookingchargeList;
     }
 
+
+    public void insertContent(int bookingId, String content) {
+        String sql = "UPDATE booking_tb SET content = ?, booking_status = 'Y' WHERE booking_id = ? ";
+
+        try (Connection conn = DBConnectionManager.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, content);
+            pstmt.setInt(2, bookingId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
 }

@@ -24,7 +24,8 @@ public class DoctorRepository {
         //조건이 있는 결과물 불러오는 sql
         // String sql = "SELECT 가져올컬럼명 FROM sample WHERE 조건걸컬럼명 = ? ";
         //조건이 여러개 있는 결과물 불러오는 sql
-        String sql = "SELECT * FROM DOCTOR_TB WHERE DOC_NAME = ? AND DEL_YN = 'Y'";
+
+        String sql = "SELECT * FROM DOCTOR_TB WHERE DOC_NAME = ? AND del_yn = 'Y'";
 
         //목록데이터 담을 리스트변수
         List<Map<String, Object>> userList = new ArrayList<>();
@@ -61,7 +62,9 @@ public class DoctorRepository {
         //조건이 있는 결과물 불러오는 sql
         // String sql = "SELECT 가져올컬럼명 FROM sample WHERE 조건걸컬럼명 = ? ";
         //조건이 여러개 있는 결과물 불러오는 sql
-        String sql = "SELECT * FROM DOCTOR_TB WHERE DEL_YN = 'Y'";
+
+        String sql = "SELECT * FROM DOCTOR_TB WHERE del_yn = 'Y'";
+
 
         //목록데이터 담을 리스트변수
         List<Map<String, Object>> userList = new ArrayList<>();
@@ -123,7 +126,9 @@ public class DoctorRepository {
 
     // 의사 추가 기능
     public void addDoctor(Doctor doctor) {
-        String sql = "INSERT INTO DOCTOR_TB (doc_id, doc_name, password, phone_number, doc_birth, department, DEL_YN) " +
+
+        String sql = "INSERT INTO DOCTOR_TB (doc_id, doc_name, password, phone_number, doc_birth, department, del_yn) " +
+
                 "VALUES(doctor_seq.NEXTVAL, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DBConnectionManager.getConnection();
@@ -134,7 +139,7 @@ public class DoctorRepository {
             pstmt.setString(3, doctor.getPhone_number());
             pstmt.setString(4, doctor.getDoc_birth());
             pstmt.setString(5, doctor.getDepartment().toString());
-            pstmt.setString(6, doctor.getActive());
+            pstmt.setString(6, doctor.getDel_yn());
 
             pstmt.executeUpdate();
 
@@ -145,6 +150,12 @@ public class DoctorRepository {
 
     }
     public void updateNumberDoctor ( int doc_id, String newPhoneNumber){
+        if (newPhoneNumber == null || newPhoneNumber.trim().isEmpty()) {
+            System.out.println("새 전화번호는 반드시 입력해야 합니다.");
+            return;
+        }
+
+
         try (Connection conn = DBConnectionManager.getConnection()) {
             String sql = "SELECT phone_number FROM DOCTOR_TB WHERE doc_id = ?";
             try (PreparedStatement checkpstmt = conn.prepareStatement(sql)) {
@@ -166,7 +177,7 @@ public class DoctorRepository {
                 pstmt.setInt(2, doc_id);
 
                 int updatedPhoneNumber = pstmt.executeUpdate();
-                System.out.println(updatedPhoneNumber > 0 ? "비밀번호 수정완료" : "수정 실패");
+                System.out.println(updatedPhoneNumber > 0 ? "전화번호 수정완료" : "수정 실패");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -175,6 +186,10 @@ public class DoctorRepository {
 
     public void updatePasswordDoctor ( int doc_id, String newPassword){
 
+        if (newPassword == null || newPassword.trim().isEmpty()) {
+            System.out.println("새 비밀번호는 반드시 입력해야 합니다.");
+            return;
+        }
         try (Connection conn = DBConnectionManager.getConnection()) {
             String sql = "SELECT password FROM DOCTOR_TB WHERE doc_id = ?";
             try (PreparedStatement checkpstmt = conn.prepareStatement(sql)) {
@@ -197,11 +212,21 @@ public class DoctorRepository {
                 int updatednum = pstmt.executeUpdate();
                 System.out.println(updatednum > 0 ? "비밀번호 수정완료" : "수정 실패");
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+    }
+    public void delDoctor(int delUserNum) {
+        String sql = "UPDATE DOCTOR_TB SET del_yn = 'N' WHERE DOC_ID = ?";
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, delUserNum);
+            pstmt.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

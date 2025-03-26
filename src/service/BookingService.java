@@ -41,7 +41,7 @@ public class BookingService {
             return;
         }
 
-        System.out.println("\n예약하실 의사선생님을 선택해주세요.");
+        System.out.println("예약하실 의사선생님을 선택해주세요.");
 
         // 현재 활성화 된 의사를 모두 조회하는 함수 필요.
         // 리스트에서 나온 의사들 중 번호를 선택하게 하기
@@ -54,7 +54,7 @@ public class BookingService {
             return;
         }
         for (Map<String, Object> map : userList) {
-            System.out.printf("%d. 의사선생님 성함: %s, 부서명: %s", map.get("DOC_ID"),map.get("DOC_NAME"), map.get("DEPARTMENT"));
+            System.out.printf("%d. 의사선생님 성함: %s, 부서명: %s\n", map.get("DOC_ID"),map.get("DOC_NAME"), map.get("DEPARTMENT"));
         }
         System.out.println("\n해당하는 회원번호를 입력해주세요.");
         int idx = inputInteger(">>> ");
@@ -75,14 +75,13 @@ public class BookingService {
         } else {
             booking = new Booking(userDto.getUserId(), docId,"", date,"N");
         }
-        System.out.println("\n[" + date + " / " + docName + "]로 예약하시겠습니까?");
+        System.out.println("\n[" + date + " / " + docName + "]로 예약하시겠습니까?(Y/N)");
         String confirm = inputString(">>> ");
 
 
         if (confirm.equals("Y")) {
             bookingRepository.addBooking(booking);
             System.out.println("\n예약이 완료되었습니다.");
-            patientMenuScreen();
         } else if (confirm.equals("N")) {
             System.out.println("\n1. 이전으로 돌아가기");
             System.out.println("\n2. 다시 진료 예약하기");
@@ -100,6 +99,7 @@ public class BookingService {
     }
 
     public void checkBooking(UserDto userDto) {
+        System.out.println("\n=============== 예약 조회 ===============");
         List<Booking> bookings = bookingRepository.findBookingByDoctorName(userDto.getName());
         if (bookings.isEmpty()) {
             System.out.println("예약된 환자가 없습니다.");
@@ -129,6 +129,10 @@ public class BookingService {
             } else {
                 System.out.println("진료 내용 작성을 해주세요.");
                 String content = inputString(">>> ");
+
+                bookingRepository.insertContent(bookingId, content);
+
+                System.out.println("작성이 완료되었습니다.");
             }
 
         }
@@ -136,10 +140,11 @@ public class BookingService {
 
     // 예약 조회
     public List<Booking> searchBooking(UserDto userDto) {
-        System.out.println("\n=============== 예약 조회 ===============");
+
         List<Booking> selectBooking = bookingRepository.getBookingByUser(userDto.getName());
-        System.out.println(selectBooking);
+
         return selectBooking;
+
     }
 
     // 예약 취소
@@ -156,24 +161,28 @@ public class BookingService {
             List<Integer> bookingNums = new ArrayList<>();
             System.out.println(userDto.getName() + "님의 예약 조회 입니다.");
             for (Booking booking : bookingList) {
-                System.out.printf("%d. 이름: %s 생년월일: %s 예약날짜: %s",
+                System.out.printf("%d. 이름: %s 생년월일: %s 예약날짜: %s\n",
                         booking.getBooking_id(), userDto.getName(), userDto.getBirth(), booking.getDate());
                 bookingNums.add(booking.getBooking_id());
             }
-
-            System.out.println("\n취소할 예약번호를 선택해주세요.");
-            int delBooking = inputInteger(">>> ");
-            if (bookingNums.contains(delBooking)) {
-                bookingRepository.deleteBooking(delBooking);
-                for (Booking booking : bookingList) {
-                    if (booking.getBooking_id() == delBooking) {
-                        System.out.println("정상적으로 취소되었습니다.");
-                        break;
+            while (true){
+                System.out.println("취소할 예약번호를 선택해주세요.");
+                int delBooking = inputInteger(">>> ");
+                if (bookingNums.contains(delBooking)) {
+                    bookingRepository.deleteBooking(delBooking);
+                    for (Booking booking : bookingList) {
+                        if (booking.getBooking_id() == delBooking) {
+                            System.out.println("정상적으로 취소되었습니다.");
+                            break;
+                        }
                     }
+                    break;
+                }else{
+                    System.out.println("올바른 예약번호를 입력해 주세요!");
                 }
             }
+
         }
-        return;
     }
 
 

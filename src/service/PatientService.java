@@ -6,6 +6,7 @@ import entity.Patient;
 
 import entity.UserDto;
 
+import main.Main;
 import repository.BookingRepository;
 import repository.PatientRepository;
 
@@ -44,6 +45,10 @@ public class PatientService implements AppService {
 
                 }
                 case 4:{
+                    updatePatient(userDto);
+                    break;
+                }
+                case 5:{
                     System.out.println("업무를 종료 합니다.");
                     return;
                 }
@@ -60,7 +65,7 @@ public class PatientService implements AppService {
         boolean flag = false;
 
         System.out.println("이름을 입력해주세요.");
-        String name = inputString(">>>");
+        String name = inputString(">>> ");
         //로그인 정보를 담기 위한 그릇
         Map<String, Object> info = new HashMap<>();
 
@@ -75,7 +80,7 @@ public class PatientService implements AppService {
             System.out.printf("%d. 환자이름: %s, 생년월일: %s, 전번뒷자리: %s \n", map.get("userId"),map.get("userName"),map.get("userBirth"), map.get("backNumber"));
         }
         System.out.println("해당하는 회원번호를 입력해주세요.");
-        int idx = inputInteger(">>>");
+        int idx = inputInteger(">>> ");
         int cnt = 0;
         UserDto user = new UserDto();
         for (Map<String, Object> map : userList) {
@@ -92,7 +97,7 @@ public class PatientService implements AppService {
         }
 
         System.out.println("비밀번호를 입력해주세요.");
-        String password = inputString(">>>");
+        String password = inputString(">>> ");
         int n = patientRepository.isUser(idx , password);
         if(n == 1){
             flag = true;
@@ -106,7 +111,7 @@ public class PatientService implements AppService {
 
     public void patientJoin() {
 
-        String name = inputString("회원명을 입력해주세요 :");
+        String name = inputString("회원명을 입력해주세요 : ");
         String password = inputString("비밀번호를 입력해주세요 : ");
         String phoneNumber;
         String birth;
@@ -232,13 +237,38 @@ public class PatientService implements AppService {
         }
     }
 
+    public void updatePatient(UserDto userDto){
+        updateUserInformation();
+        int num = inputInteger(">>> ");
+        if (num == 1){
+            modifyPatient(userDto);
+        } else if (num ==2) {
+            System.out.println("정말 탈퇴하시겠습니까.(Y/N)");
+            String str = inputString(">>> ");
+            if(str.equals("Y")){
+                delPatient(userDto);
+            }else{
+                System.out.println("탈퇴를 취소합니다.");
+            }
+        } else if (num ==3) {
+            System.out.println("수정화면을 나갑니다.");
+        } else {
+            System.out.println("올바른 선택지를 입력해주세요.");
+            updatePatient(userDto);
+        }
+    }
     public void modifyPatient(UserDto userDto){
         updateScreen();
-        int num = inputInteger(">>>");
+        int num = inputInteger(">>> ");
         if (num == 1){
             modifyPasswordPatient(userDto);
         } else if (num ==2) {
             modifyPhoneNumberPatient(userDto);
+        } else if (num ==3) {
+            return;
+        } else {
+            System.out.println("올바른 선택지를 입력해주세요.");
+            modifyPatient(userDto);
         }
     }
 
@@ -256,8 +286,18 @@ public class PatientService implements AppService {
 
         System.out.println("수정할 전화번호를 입력하세요.");
         String newPhoneNumber = inputString("새로운 전화번호: ");
+        if (!isValidPhoneNumber(newPhoneNumber)) {
+            System.out.println("유효하지 않은 전화번호 입니다.");
+        } else {
+            patientRepository.updateNumberPatient(id, newPhoneNumber);
+        }
+    }
 
-        patientRepository.updateNumberPatient(id, newPhoneNumber);
+    public void delPatient(UserDto userDto) {
+        int delUserNum = userDto.getUserId();
+        patientRepository.delPatient(delUserNum);
+        System.out.println("회원 정보가 삭제되었습니다.");
+        System.exit(0);
     }
 
     public void findByCharge(UserDto userDto){
