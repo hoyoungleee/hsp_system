@@ -13,6 +13,15 @@ public class Booking {
     private String patientName;
     private String patientBirth;
 
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    private Department department;
     public Booking(int booking_id, int user_id, int doc_id, LocalDate date, String content, String patientName, String patientBirth) {
         this.booking_id = booking_id;
         this.user_id = user_id;

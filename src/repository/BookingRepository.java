@@ -116,6 +116,43 @@ public class BookingRepository {
             return false;
         }
     }
+    public List<Booking> FindbyBookingCharge(int patientId) {
+        List<Booking> bookingchargeList = new ArrayList<>();
+        String query = "SELECT b.*, d.department " +
+                "FROM booking_tb b " +
+                "JOIN doctor_tb d ON b.doc_id = d.doc_id " +
+                "WHERE b.booking_status = 'Y' AND b.patient_id = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+
+            pstmt.setInt(1, patientId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Booking booking = new Booking(
+                            rs.getInt("booking_id"),
+                            rs.getInt("user_id"),
+                            rs.getInt("doc_id"),
+                            rs.getDate("date").toLocalDate(),
+                            rs.getString("content"),
+                            rs.getString("patientName"),
+                            rs.getString("patientBirth")
+                    );
+
+
+                    // 상태값 설정
+                    booking.setStatus(rs.getString("booking_status"));
+
+                    bookingchargeList.add(booking);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return bookingchargeList;
+    }
+
 
 
 }
