@@ -1,6 +1,7 @@
 package service;
 
 import entity.Booking;
+import entity.Department;
 import entity.Patient;
 import entity.UserDto;
 import repository.BookingRepository;
@@ -54,7 +55,7 @@ public class BookingService {
             return;
         }
         for (Map<String, Object> map : userList) {
-            System.out.printf("%d. 의사선생님 성함: %s, 부서명: %s\n", map.get("DOC_ID"),map.get("DOC_NAME"), map.get("DEPARTMENT"));
+            System.out.printf("%d. 의사선생님 성함: %s, 부서명: %s\n", map.get("DOC_ID"),map.get("DOC_NAME"), Department.valueOf((String) map.get("DEPARTMENT")).getName() );
         }
         System.out.println("\n해당하는 회원번호를 입력해주세요.");
         int idx = inputInteger(">>> ");
