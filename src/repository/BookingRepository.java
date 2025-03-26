@@ -30,6 +30,7 @@ public class BookingRepository {
             pstmt.setInt(5, booking.getDoc_id());
 
             int result = pstmt.executeUpdate(); // 실행된 행 수 반환
+
             return result > 0; // 1 이상이면 성공
 
         } catch (SQLException e) {

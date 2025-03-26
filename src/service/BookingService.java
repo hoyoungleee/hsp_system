@@ -143,9 +143,6 @@ public class BookingService {
 
         List<Booking> selectBooking = bookingRepository.getBookingByUser(userDto.getName());
 
-        if (selectBooking.isEmpty()) {
-            System.out.println("예약된 환자가 없습니다.");
-        }
         return selectBooking;
 
     }

@@ -37,10 +37,14 @@ public class PatientService implements AppService {
                     break;
                 }
                 case 3:{
-                    modifyPatient(userDto);
+                    System.out.println("진료비 계산하는 곳입니다.");
                     break;
                 }
                 case 4:{
+                    modifyPatient(userDto);
+                    break;
+                }
+                case 5:{
                     System.out.println("업무를 종료 합니다.");
                     return;
                 }
@@ -236,6 +240,11 @@ public class PatientService implements AppService {
             modifyPasswordPatient(userDto);
         } else if (num ==2) {
             modifyPhoneNumberPatient(userDto);
+        } else if (num ==3) {
+            return;
+        } else {
+            System.out.println("올바른 선택지를 입력해주세요.");
+            modifyPatient(userDto);
         }
     }
 

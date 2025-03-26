@@ -4,25 +4,27 @@ public class Patient {
     private String password;
     private String user_name;
     private String phone_number;
-    private String active;
+    private String del_yn;
     private int  user_id;
     private String  user_brith;
 
+
+
     //계정생성할떄 id가 없기 때문에 생성할때 id값을 뺌
-    public Patient(String password, String user_name, String phone_number, String active, String user_brith) {
+    public Patient(String password, String user_name, String phone_number, String del_yn, String user_brith) {
         this.password = password;
         this.user_name = user_name;
         this.phone_number = phone_number;
-        this.active = active;
+        this.del_yn = del_yn;
         this.user_brith = user_brith;
     }
 
     //일반 정보를 담을 때 씀.
-    public Patient(String password, String user_name, String phone_number, String active, int user_id, String user_brith) {
+    public Patient(String password, String user_name, String phone_number, String del_yn, int user_id, String user_brith) {
         this.password = password;
         this.user_name = user_name;
         this.phone_number = phone_number;
-        this.active = active;
+        this.del_yn = del_yn;
         this.user_id = user_id;
         this.user_brith = user_brith;
     }
@@ -59,12 +61,12 @@ public class Patient {
         this.phone_number = phone_number;
     }
 
-    public String getActive() {
-        return active;
+    public String getDel_yn() {
+        return del_yn;
     }
 
-    public void setActive(String active) {
-        this.active = active;
+    public void setDel_yn(String del_yn) {
+        this.del_yn = del_yn;
     }
 
     public int getUser_id() {

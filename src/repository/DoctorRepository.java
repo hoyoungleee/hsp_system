@@ -24,7 +24,7 @@ public class DoctorRepository {
         //조건이 있는 결과물 불러오는 sql
         // String sql = "SELECT 가져올컬럼명 FROM sample WHERE 조건걸컬럼명 = ? ";
         //조건이 여러개 있는 결과물 불러오는 sql
-        String sql = "SELECT * FROM DOCTOR_TB WHERE DOC_NAME = ? AND ACTIVE = 'Y'";
+        String sql = "SELECT * FROM DOCTOR_TB WHERE DOC_NAME = ? AND del_yn = 'Y'";
 
         //목록데이터 담을 리스트변수
         List<Map<String, Object>> userList = new ArrayList<>();
@@ -123,7 +123,7 @@ public class DoctorRepository {
 
     // 의사 추가 기능
     public void addDoctor(Doctor doctor) {
-        String sql = "INSERT INTO DOCTOR_TB (doc_id, doc_name, password, phone_number, doc_birth, department, ACTIVE) " +
+        String sql = "INSERT INTO DOCTOR_TB (doc_id, doc_name, password, phone_number, doc_birth, department, del_yn) " +
                 "VALUES(doctor_seq.NEXTVAL, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DBConnectionManager.getConnection();
@@ -134,7 +134,7 @@ public class DoctorRepository {
             pstmt.setString(3, doctor.getPhone_number());
             pstmt.setString(4, doctor.getDoc_birth());
             pstmt.setString(5, doctor.getDepartment().toString());
-            pstmt.setString(6, doctor.getActive());
+            pstmt.setString(6, doctor.getDel_yn());
 
             pstmt.executeUpdate();
 
