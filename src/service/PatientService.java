@@ -1,5 +1,6 @@
 package service;
 
+import entity.Booking;
 import entity.Patient;
 
 import entity.UserDto;
@@ -255,5 +256,14 @@ public class PatientService implements AppService {
         String newPhoneNumber = inputString("새로운 전화번호: ");
 
         patientRepository.updateNumberPatient(id, newPhoneNumber);
+    }
+
+    public void findByCharge(int docId){
+
+        BookingRepository bookingRepository = new BookingRepository();
+        for (Booking booking : bookingRepository.FindbyBookingCharge(docId)) {
+            System.out.println(booking);
+        }
+
     }
 }
