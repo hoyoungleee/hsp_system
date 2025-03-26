@@ -22,6 +22,7 @@ public class Booking {
         this.department = department;
     }
 
+
     public Booking(int booking_id, int user_id, int doc_id,  String content, LocalDate date, String status) {
         this.booking_id = booking_id;
         this.user_id = user_id;
@@ -31,13 +32,13 @@ public class Booking {
         this.status = status;
     }
     //의사에서 정보 조회 쓰는 생성자
-    public Booking(int booking_id, int user_id, int doc_id, LocalDate date, String content, String status, String patientBirth) {
+    public Booking(int booking_id, int user_id, int doc_id, LocalDate date, String content, String patientName, String patientBirth) {
         this.booking_id = booking_id;
         this.user_id = user_id;
         this.doc_id = doc_id;
         this.content = content;
         this.date = date;
-        this.status = status;
+        this.patientName = patientName;
         this.patientBirth = patientBirth;
     }
 
