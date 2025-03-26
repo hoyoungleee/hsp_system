@@ -20,7 +20,7 @@ public class Main {
 
         while(true){
             startScreen();
-            int num = inputInteger(">>>");
+            int num = inputInteger(">>> ");
             if(num == -1){
                 System.out.println("입력이 제대로 처리되지 못하였습니다.");
             }

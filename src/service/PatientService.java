@@ -1,5 +1,7 @@
 package service;
 
+import entity.Booking;
+import entity.Department;
 import entity.Patient;
 
 import entity.UserDto;
@@ -38,8 +40,9 @@ public class PatientService implements AppService {
                     break;
                 }
                 case 3:{
-                    System.out.println("진료비 계산하는 곳입니다.");
+                    findByCharge(userDto);
                     break;
+
                 }
                 case 4:{
                     updatePatient(userDto);
@@ -132,7 +135,7 @@ public class PatientService implements AppService {
         Patient patient = new Patient(password, name, phoneNumber, "Y",  birth);
 
         patientRepository.addPatient(patient);
-        System.out.println("회원가입 완료");
+        System.out.println("회원가입이 완료 되었습니다.");
 
     }
 
@@ -295,5 +298,26 @@ public class PatientService implements AppService {
         patientRepository.delPatient(delUserNum);
         System.out.println("회원 정보가 삭제되었습니다.");
         System.exit(0);
+    }
+
+    public void findByCharge(UserDto userDto){
+
+        System.out.println(userDto.getName() + " 님의 처리된 진료 목록입니다.");
+        BookingRepository Repository = new BookingRepository();
+        int sum = 0;
+        for (Booking booking : bookingRepository.FindbyBookingCharge(userDto.getUserId())) {
+
+            String date = String.valueOf(booking.getDate());
+            int charge = Department.valueOf(booking.getDepartment()).getPrice();
+            String name = Department.valueOf(booking.getDepartment()).getName();
+            sum += charge;
+            System.out.printf("%d. 방문부서 : %s , 방문날짜 : %s, 진료비용 : %d , 진료내용 : %s \n", booking.getBooking_id(), name ,date, charge, booking.getContent());
+        }
+
+        System.out.printf("%s님의 총 진료 비용은 %d 입니다.\n", userDto.getName(), sum);
+
+        System.out.println("확인하셨으면 아무키나 눌러주세요");
+        String select = inputString(">>> ");
+
     }
 }

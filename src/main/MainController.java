@@ -16,11 +16,12 @@ public class MainController {
 
     public void login(){
         loginScreen();
-        int num = inputInteger(">>>");
+        int num = inputInteger(">>> ");
         if(num == 1){
            Map<String,Object> loginInfo =  patientService.isLogin();
 
            if((boolean)loginInfo.get("flag")){
+               System.out.println("로그인에 성공하셨습니다.");
                patientService.start((UserDto)loginInfo.get("userInfo"));
            }else {
                System.out.println("올바른 계정정보를 입력하세요.");
@@ -30,6 +31,7 @@ public class MainController {
             Map<String,Object> loginInfo =  doctorService.isLogin();
 
             if((boolean)loginInfo.get("flag")){
+                System.out.println("로그인에 성공하셨습니다.");
                 doctorService.start((UserDto)loginInfo.get("userInfo"));
             }else {
                 System.out.println("올바른 계정정보를 입력하세요.");
@@ -40,7 +42,7 @@ public class MainController {
 
     public void createAccount(){
         createAccountScreen();
-        int num = inputInteger(">>>");
+        int num = inputInteger(">>> ");
         if(num == 1){
             patientService.patientJoin();
         }else if(num == 2){
