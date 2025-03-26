@@ -123,7 +123,7 @@ public class DoctorRepository {
 
     // 의사 추가 기능
     public void addDoctor(Doctor doctor) {
-        String sql = "INSERT INTO DOCTOR_TB (doc_id, doc_name, password, phone_number, doc_birth, department, ACTIVE) " +
+        String sql = "INSERT INTO DOCTOR_TB (doc_id, doc_name, password, phone_number, doc_birth, department, DEL_YN) " +
                 "VALUES(doctor_seq.NEXTVAL, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DBConnectionManager.getConnection();

@@ -16,7 +16,7 @@ public class PatientRepository {
 
     // 환자 계정 추가
     public void addPatient (Patient patient){
-        String sql = "INSERT INTO PATIENT_TB (user_id, password, user_name, phone_number, ACTIVE, user_birth) " +
+        String sql = "INSERT INTO PATIENT_TB (user_id, password, user_name, phone_number, DEL_YN, user_birth) " +
                 "VALUES(user_seq.NEXTVAL, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DBConnectionManager.getConnection();

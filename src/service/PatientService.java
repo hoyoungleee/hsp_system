@@ -1,6 +1,7 @@
 package service;
 
 import entity.Booking;
+import entity.Department;
 import entity.Patient;
 
 import entity.UserDto;
@@ -38,8 +39,9 @@ public class PatientService implements AppService {
                     break;
                 }
                 case 3:{
-                    modifyPatient(userDto);
+                    findByCharge(userDto);
                     break;
+
                 }
                 case 4:{
                     System.out.println("업무를 종료 합니다.");
@@ -258,12 +260,22 @@ public class PatientService implements AppService {
         patientRepository.updateNumberPatient(id, newPhoneNumber);
     }
 
-    public void findByCharge(int docId){
+    public void findByCharge(UserDto userDto){
 
-        BookingRepository bookingRepository = new BookingRepository();
-        for (Booking booking : bookingRepository.FindbyBookingCharge(docId)) {
-            System.out.println(booking);
+        BookingRepository Repository = new BookingRepository();
+        int sum = 0;
+        for (Booking booking : bookingRepository.FindbyBookingCharge(userDto.getUserId())) {
+
+            String date = String.valueOf(booking.getDate());
+            int charge = Department.valueOf(booking.getDepartment()).getPrice();
+            sum += charge;
+            System.out.printf("%d.방문부서 : %s , 방문날짜 : %s, 진료비용 : %d \n", booking.getBooking_id(), booking.getDepartment() ,date, charge);
         }
+
+        System.out.printf("%s님의 총 진료 비용은 %d 입니다.\n", userDto.getName(), sum);
+
+        System.out.println("확인하셨으면 아무키나 눌러주세요");
+        String select = inputString(">>> ");
 
     }
 }
