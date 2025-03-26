@@ -45,7 +45,7 @@ public class PatientRepository {
         //조건이 있는 결과물 불러오는 sql
         // String sql = "SELECT 가져올컬럼명 FROM sample WHERE 조건걸컬럼명 = ? ";
         //조건이 여러개 있는 결과물 불러오는 sql
-        String sql = "SELECT * FROM PATIENT_TB pt WHERE pt.USER_NAME = ? AND ACTIVE = 'Y'";
+        String sql = "SELECT * FROM PATIENT_TB pt WHERE pt.USER_NAME = ? AND DEL_YN = 'Y'";
 
         //목록데이터 담을 리스트변수
         List<Map<String, Object>> userList = new ArrayList<>();

@@ -24,7 +24,7 @@ public class DoctorRepository {
         //조건이 있는 결과물 불러오는 sql
         // String sql = "SELECT 가져올컬럼명 FROM sample WHERE 조건걸컬럼명 = ? ";
         //조건이 여러개 있는 결과물 불러오는 sql
-        String sql = "SELECT * FROM DOCTOR_TB WHERE DOC_NAME = ? AND ACTIVE = 'Y'";
+        String sql = "SELECT * FROM DOCTOR_TB WHERE DOC_NAME = ? AND DEL_YN = 'Y'";
 
         //목록데이터 담을 리스트변수
         List<Map<String, Object>> userList = new ArrayList<>();
@@ -61,7 +61,7 @@ public class DoctorRepository {
         //조건이 있는 결과물 불러오는 sql
         // String sql = "SELECT 가져올컬럼명 FROM sample WHERE 조건걸컬럼명 = ? ";
         //조건이 여러개 있는 결과물 불러오는 sql
-        String sql = "SELECT * FROM DOCTOR_TB WHERE ACTIVE = 'Y'";
+        String sql = "SELECT * FROM DOCTOR_TB WHERE DEL_YN = 'Y'";
 
         //목록데이터 담을 리스트변수
         List<Map<String, Object>> userList = new ArrayList<>();
