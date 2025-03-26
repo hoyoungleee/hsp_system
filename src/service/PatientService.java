@@ -4,11 +4,11 @@ import entity.Patient;
 
 import entity.UserDto;
 
+import repository.BookingRepository;
 import repository.PatientRepository;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,22 +16,24 @@ import java.util.Map;
 import static ui.AppUi.*;
 public class PatientService implements AppService {
 
-    private final PatientRepository patientRepository = new PatientRepository();
+    PatientRepository patientRepository = new PatientRepository();
+    BookingRepository bookingRepository = new BookingRepository();
+    BookingService bookingService = new BookingService();
 
     //AppService를 구현했기에 강제로 생성하는 메서드
     //유저번호 참조할 함수는 userDto 가져다 쓰세용
     public void start(UserDto userDto){
+
         while (true){
-            System.out.println(userDto.toString());
             patientMenuScreen();
-            int select = inputInteger(">>>");
+            int select = inputInteger(">>> ");
             switch (select){
                 case 1:{
-                    System.out.println("진료예약신청이시작됩니다.");
+                    bookingService.insertBooking(userDto);
                     break;
                 }
                 case 2:{
-                    System.out.println("예약취소를 실행하는 자리");
+                    bookingService.deleteBooking(userDto);
                     break;
                 }
                 case 3:{
@@ -77,6 +79,7 @@ public class PatientService implements AppService {
             if((Integer)map.get("userId") == idx){
                 cnt++;
                 user.setUserId(idx);
+                user.setBirth((String) map.get("userBirth"));
             }
         }
         if(cnt != 1){

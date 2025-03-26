@@ -1,6 +1,9 @@
 package repository;
 
 import entity.Booking;
+import entity.UserDto;
+import jdbc.DBConnectionManager;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,17 +18,16 @@ import static jdbc.DBConnectionManager.getConnection;
 public class BookingRepository {
     // Booking 예약 신청
     public boolean addBooking(Booking booking) {
-        String insert_booking = "INSERT INTO booking_tb (booking_id, booking_status, user_id, booking_date, content, doc_id) VALUES (?, ?, ?, ?, ?, ?)";
+        String insert_booking = "INSERT INTO booking_tb (booking_id, booking_status, user_id, booking_date, content, doc_id) VALUES (BOOKING_SEQ.NEXTVAL, ?, ?, ?, ?, ?)";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(insert_booking)) {
 
-            pstmt.setInt(1, booking.getBooking_id());
-            pstmt.setString(2, booking.getStatus());
-            pstmt.setInt(3, booking.getUser_id());
-            pstmt.setString(4, booking.getDate().toString());  // LocalDate를 String으로 변환
-            pstmt.setString(5, booking.getContent());
-            pstmt.setInt(6, booking.getDoc_id());
+            pstmt.setString(1, booking.getStatus());
+            pstmt.setInt(2, booking.getUser_id());
+            pstmt.setString(3, booking.getDate().toString());  // LocalDate를 String으로 변환
+            pstmt.setString(4, booking.getContent());
+            pstmt.setInt(5, booking.getDoc_id());
 
             int result = pstmt.executeUpdate(); // 실행된 행 수 반환
             return result > 0; // 1 이상이면 성공
@@ -52,8 +54,8 @@ public class BookingRepository {
                             rs.getInt("booking_id"),             // 예약 ID
                             rs.getInt("user_id"),                // 사용자 ID
                             rs.getInt("doc_id"),                 // 의사 ID
-                            LocalDate.parse(rs.getString("booking_date"), DateTimeFormatter.ISO_DATE), // 예약 날짜
                             rs.getString("content"),             // 예약 내용
+                            LocalDate.parse(rs.getString("booking_date"), DateTimeFormatter.ISO_DATE), // 예약 날짜
                             rs.getString("booking_status")      // 예약 상태
                     );
                     bookings.add(booking);  // 리스트에 예약 추가
@@ -69,11 +71,11 @@ public class BookingRepository {
     public List<Booking> findBookingByDoctorName(String doctorName) {
         List<Booking> bookings = new ArrayList<>();
         String query = """
-                SELECT b.*, p.user_name 
+                SELECT b.*, p.user_name as userName , p.user_birth as userBirth
                 FROM booking_tb b 
                 JOIN patient_tb p ON b.user_id = p.user_id 
                 JOIN doctor_tb d ON b.doc_id = d.doc_id 
-                WHERE d.doc_name = ?
+                WHERE d.doc_name = ? AND booking_status = 'N'
             """;
 
         try (Connection conn = getConnection();
@@ -89,7 +91,8 @@ public class BookingRepository {
                             rs.getInt("doc_id"),                 // 의사 ID
                             LocalDate.parse(rs.getString("booking_date"), DateTimeFormatter.ISO_DATE), // 예약 날짜
                             rs.getString("content"),             // 예약 내용
-                            rs.getString("booking_status")      // 예약 상태
+                            rs.getString("userName"),
+                            rs.getString("userBirth")
                     );
                     bookings.add(booking);  // 리스트에 예약 추가
                 }
@@ -116,4 +119,20 @@ public class BookingRepository {
             return false;
         }
     }
+
+    public void insertContent(int bookingId, String content) {
+        String sql = "UPDATE booking_tb SET content = ?, booking_status = 'Y' WHERE booking_id = ? ";
+
+        try (Connection conn = DBConnectionManager.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, content);
+            pstmt.setInt(2, bookingId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
 }
