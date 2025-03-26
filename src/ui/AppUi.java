@@ -56,8 +56,9 @@ public class AppUi {
         System.out.println("\n=============== 환자 메뉴 ===============");
         System.out.println("1. 진료 예약 신청");
         System.out.println("2. 예약 취소");
-        System.out.println("3. 회원 정보 수정");
-        System.out.println("4. 종료");
+        System.out.println("3. 진료비 내역");
+        System.out.println("4. 회원 정보 수정");
+        System.out.println("5. 종료");
         makeLine();
     }
 
