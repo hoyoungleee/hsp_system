@@ -172,6 +172,15 @@ public class PatientRepository {
             e.printStackTrace();
         }
     }
-
+    public void delPatient(int delUserNum) {
+        String sql = "UPDATE PATIENT_TB SET del_yn = 'N' WHERE USER_ID = ?";
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, delUserNum);
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

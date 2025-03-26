@@ -172,7 +172,7 @@ public class DoctorRepository {
                 pstmt.setInt(2, doc_id);
 
                 int updatedPhoneNumber = pstmt.executeUpdate();
-                System.out.println(updatedPhoneNumber > 0 ? "비밀번호 수정완료" : "수정 실패");
+                System.out.println(updatedPhoneNumber > 0 ? "전화번호 수정완료" : "수정 실패");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -207,11 +207,21 @@ public class DoctorRepository {
                 int updatednum = pstmt.executeUpdate();
                 System.out.println(updatednum > 0 ? "비밀번호 수정완료" : "수정 실패");
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+    }
+    public void delDoctor(int delUserNum) {
+        String sql = "UPDATE DOCTOR_TB SET del_yn = 'N' WHERE DOC_ID = ?";
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, delUserNum);
+            pstmt.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

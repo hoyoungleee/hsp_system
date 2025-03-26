@@ -17,7 +17,6 @@ public class DBConnectionManager {
     static {
         try {
             Class.forName(DRIVER);
-            System.out.println("JDBC 드라이버 강제 구동 완료!");
         } catch (ClassNotFoundException e) {
             System.out.println("JDBC 드라이버 로드 실패!");
             e.printStackTrace();

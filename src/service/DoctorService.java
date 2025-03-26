@@ -3,6 +3,7 @@ package service;
 import entity.Department;
 import entity.Doctor;
 import entity.UserDto;
+import main.Main;
 import repository.DoctorRepository;
 
 import java.time.LocalDate;
@@ -22,14 +23,14 @@ public class DoctorService implements AppService {
     public void start(UserDto userDto){
         while (true){
             doctorMenuScreen();
-            int select = inputInteger(">>>");
+            int select = inputInteger(">>> ");
             switch (select){
                 case 1:{
                     bookingService.checkBooking(userDto);
                     break;
                 }
                 case 2: {
-                    modifyDoctor(userDto);
+                    updateDoctor(userDto);
                     break;
                 }
                 case 3: {
@@ -49,7 +50,7 @@ public class DoctorService implements AppService {
         boolean flag = false;
 
         System.out.println("이름을 입력해주세요.");
-        String name = inputString(">>>");
+        String name = inputString(">>> ");
         //로그인 정보를 담기 위한 그릇
 
         Map<String, Object> info = new HashMap<>();
@@ -65,7 +66,7 @@ public class DoctorService implements AppService {
             System.out.printf("%d. 의사선생님 성함: %s, 생년월일: %s, 전번뒷자리: %s \n", map.get("userId"), map.get("userName"), map.get("userBirth"), map.get("backNumber"));
         }
         System.out.println("해당하는 회원번호를 입력해주세요.");
-        int idx = inputInteger(">>>");
+        int idx = inputInteger(">>> ");
         int cnt = 0;
         UserDto user = new UserDto();
         for (Map<String, Object> map : userList) {
@@ -81,7 +82,7 @@ public class DoctorService implements AppService {
         }
 
         System.out.println("비밀번호를 입력해주세요.");
-        String password = inputString(">>>");
+        String password = inputString(">>> ");
         int n = doctorRepository.isUser(idx, password);
         if (n == 1) {
             flag = true;
@@ -95,10 +96,8 @@ public class DoctorService implements AppService {
 
     // 부서 선택하는 메서드
     public static Department selectDec() {
-        System.out.println("================= 부서 선택 ==================");
-        System.out.println("부서를 선택해주세요.");
-        System.out.println("1.정형외과 2.안과 3.내과 4.성형외과");
-        int a = inputInteger(">> ");
+        selectDepartmentScreen();
+        int a = inputInteger(">>> ");
 
         if (a == 1) {
             return Department.ORTHOPEDICS;
@@ -115,7 +114,7 @@ public class DoctorService implements AppService {
 
     // 의사 추가
     public void doctorJoin() {
-        String name = inputString("회원명을 입력해주세요 :");
+        String name = inputString("회원명을 입력해주세요 : ");
         String password = inputString("비밀번호를 입력해주세요 : ");
         Department department = selectDec();
         String phoneNumber;
@@ -242,9 +241,30 @@ public class DoctorService implements AppService {
 
     }
 
+    public void updateDoctor(UserDto userDto){
+        updateUserInformation();
+        int num = inputInteger(">>> ");
+        if (num == 1){
+            modifyDoctor(userDto);
+        } else if (num ==2) {
+            System.out.println("정말 탈퇴하시겠습니까.(Y/N)");
+            String str = inputString(">>> ");
+            if(str.equals("Y")){
+                delDoctor(userDto);
+            }else{
+                System.out.println("탈퇴를 취소합니다.");
+            }
+        } else if (num ==3) {
+            System.out.println("수정화면을 나갑니다.");
+        } else {
+            System.out.println("올바른 선택지를 입력해주세요.");
+            updateDoctor(userDto);
+        }
+    }
+
     public void modifyDoctor(UserDto userDto) {
         updateScreen();
-        int num = inputInteger(">>>");
+        int num = inputInteger(">>> ");
         if (num == 1) {
             modifyPasswordDoctor(userDto);
         } else if (num == 2) {
@@ -272,5 +292,11 @@ public class DoctorService implements AppService {
         } else {
             doctorRepository.updateNumberDoctor(id, newPhoneNumber);
         }
+    }
+    public void delDoctor(UserDto userDto) {
+        int delUserNum = userDto.getUserId();
+        doctorRepository.delDoctor(delUserNum);
+        System.out.println("회원 정보가 삭제되었습니다.");
+        System.exit(0);
     }
 }
