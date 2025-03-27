@@ -2,6 +2,8 @@
 
 > Java 콘솔 기반의 의료 예약 시스템 프로젝트입니다.
 
+[5팀 자료](https://drive.google.com/drive/folders/1F7q8gwsOqiJ-0GygD9I6hFRFrmWlc90N)
+
 ## 📅 프로젝트 개요
 
 - **프로젝트명**: 진료 예약 시스템
