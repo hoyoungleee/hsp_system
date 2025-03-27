@@ -1,4 +1,5 @@
-![Uploading image.png…]()
+
+![image](https://github.com/user-attachments/assets/de19c846-ca65-4f43-aee7-19a2c8de9dc5)
 
 # 진료 예약 시스템
 
