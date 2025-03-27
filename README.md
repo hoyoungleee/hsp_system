@@ -18,6 +18,9 @@
   - Git, GitHub
   - Oracle SQL Developer
 
+## DB 개요
+![Hospital__Reservation_System-2](https://github.com/user-attachments/assets/38a41555-28dc-4f1a-b22f-06d2ce47a545)
+
 ## 🎯 프로젝트 목적
 
 의료업계 종사 경험이 있는 팀원을 중심으로, 실제 의료 예약 시스템을 기반으로 한 프로젝트를 구현하였습니다. Java, JDBC, SQL 등의 기술을 직접 적용해보며 백엔드 개발 역량을 강화하는 것을 목표로 했습니다.
@@ -40,6 +43,7 @@
 - 예약 환자 목록 조회
 - 환자 진료 내역 작성
 - 개인정보 수정
+
 
 ### 기타 기능
 - 사용자 유형별 메뉴 분리
