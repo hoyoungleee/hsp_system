@@ -7,6 +7,7 @@ import java.sql.SQLException;
 // 데이터베이스 연결 및 관리를 위한 공통 로직을 모아놓은 클래스
 public class DBConnectionManager {
 
+
     // 오라클 JDBC 연결 정보
     private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
     private static final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
