@@ -42,7 +42,7 @@ public class BookingRepository {
     // 환자 이름으로 예약 검색
     public List<Booking> getBookingByUser(String userName) {
         List<Booking> bookings = new ArrayList<>();  // 예약 리스트 초기화
-        String query = "SELECT b.* FROM booking_tb b JOIN patient_tb p ON b.user_id = p.user_id WHERE p.user_name = ?";  // 특정 환자만 검색
+        String query = "SELECT b.* FROM booking_tb b JOIN patient_tb p ON b.user_id = p.user_id WHERE p.user_name = ? AND booking_status = 'N'";  // 특정 환자만 검색
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
